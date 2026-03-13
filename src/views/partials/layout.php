@@ -25,6 +25,8 @@
       <a href="/" class="nav-link <?= $_SERVER['REQUEST_URI'] === '/' ? 'active' : '' ?>">Inicio</a>
       <a href="/calendario" class="nav-link <?= $_SERVER['REQUEST_URI'] === '/calendario' ? 'active' : '' ?>">Calendario</a>
       <a href="/reglas" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/reglas') ? 'active' : '' ?>">Reglas</a>
+      <a href="https://www.ivoox.com/podcast-golstalgia_sq_f1287524_1.html" class="nav-link" target="_blank" rel="noopener">🎙️ Podcast</a>
+      <a href="https://www.patreon.com/cw/golstalgia_" class="nav-link" target="_blank" rel="noopener">🧡 Patreon</a>
       
       <?php if (Auth::check()): ?>
         <a href="/dashboard" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/dashboard') ? 'active' : '' ?>">Mi Liga</a>
