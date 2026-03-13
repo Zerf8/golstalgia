@@ -1,0 +1,15 @@
+.env
+vendor/
+*.log
+.DS_Store
+Thumbs.db
+node_modules/
+.idea/
+.vscode/
+client_secret_*.json
+golstalgia/
+golstalgia.zip
+debug_*.txt
+debug_db.php
+schema_clasificacion.txt
+final_count.txt

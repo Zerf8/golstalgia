@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  php:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile.php
+    container_name: golstalgia_php
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8088:80"
+    depends_on:
+      - db
+    environment:
+      - APP_ENV=development
+
+  db:
+    image: mysql:8.0
+    container_name: golstalgia_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: golstalgia
+      MYSQL_ROOT_PASSWORD: root_secret
+      MYSQL_USER: golstalgia_user
+      MYSQL_PASSWORD: golstalgia_pass
+    ports:
+      - "3336:3306"
+    volumes:
+      - golstalgia_db_data:/var/lib/mysql
+      - ./database/migrations:/docker-entrypoint-initdb.d
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: golstalgia_phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_USER: golstalgia_user
+      PMA_PASSWORD: golstalgia_pass
+    ports:
+      - "8089:80"
+    depends_on:
+      - db
+
+volumes:
+  golstalgia_db_data:
