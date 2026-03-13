@@ -6,7 +6,11 @@
   <title><?= $pageTitle ?? 'Golstalgia Liga' ?></title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/public/css/app.css">
+  <?php
+    $cssPath = $_SERVER['DOCUMENT_ROOT'] . '/public/css/app.css';
+    $cssV    = file_exists($cssPath) ? filemtime($cssPath) : time();
+  ?>
+  <link rel="stylesheet" href="/public/css/app.css?v=<?= $cssV ?>">
 </head>
 <body>
 
