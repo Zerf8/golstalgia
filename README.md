@@ -112,7 +112,7 @@ golstalgia/
 # Copiar todos los archivos excepto docker/, .env
 
 # En Hostinger configurar .env con:
-DB_HOST=saddlebrown-squirrel-979095.hostingersite.com
+DB_HOST=46.202.172.197
 DB_NAME=u214755203_golstalgia2026
 DB_USER=u214755203_golstalgia
 DB_PASS=/5z*TB7jdMWynV+gol
