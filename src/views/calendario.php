@@ -40,20 +40,16 @@ $pageTitle = "Calendario Oficial – Golstalgia";
                                     <?php if ($p['estado'] === 'jugada'): ?>
                                         <div class="match-score" style="font-size: 1rem; width: 60px;"><?= $p['puntos_local'] ?> - <?= $p['puntos_visitante'] ?></div>
                                     <?php else: ?>
-                                        <div class="match-vs" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 90px; padding: 0.3rem 0;">
+                                        <div class="match-schedule">
                                             <?php if (!empty($p['fecha_acordada'])): ?>
                                                 <?php 
                                                   $dias = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
                                                   $w = date('w', strtotime($p['fecha_acordada']));
                                                 ?>
-                                                <span style="font-weight: 800; font-size: 0.8rem; color: #fff; margin-bottom: 2px;">
-                                                    <?= $dias[$w] ?> <?= date('d/m', strtotime($p['fecha_acordada'])) ?>
-                                                </span>
-                                                <strong style="font-size:1.3rem; color: var(--amarillo-retro); line-height: 1; text-shadow: 1px 1px 0 #000;">
-                                                    <?= date('H:i', strtotime($p['fecha_acordada'])) ?>
-                                                </strong>
+                                                <div class="schedule-date"><?= $dias[$w] ?> <?= date('d/m', strtotime($p['fecha_acordada'])) ?></div>
+                                                <div class="schedule-time"><?= date('H:i', strtotime($p['fecha_acordada'])) ?></div>
                                             <?php else: ?>
-                                                <span style="opacity:0.45; font-size:0.75rem;">Sin asignar</span>
+                                                <div class="schedule-none">Sin asignar</div>
                                             <?php endif; ?>
                                         </div>
                                     <?php endif; ?>

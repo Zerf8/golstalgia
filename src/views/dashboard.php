@@ -93,24 +93,22 @@ ob_start();
                 <div class="match-team <?= $esLocal ? 'row-me-text' : '' ?>">
                   J<?= $p['jornada_numero'] ?>: <?= htmlspecialchars($p['nombre_local']) ?>
                 </div>
-                <div class="match-score" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 90px; padding: 0.3rem 0;">
+                <div class="match-score-wrap" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 90px;">
                   <?php if ($p['estado'] === 'jugada'): ?>
-                    <strong style="font-size: 1.3rem; line-height: 1;"><?= $p['puntos_local'] ?> - <?= $p['puntos_visitante'] ?></strong>
+                    <div class="match-score"><?= $p['puntos_local'] ?> - <?= $p['puntos_visitante'] ?></div>
                   <?php else: ?>
-                    <?php if (!empty($p['fecha_acordada'])): ?>
-                      <?php 
-                        $dias = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
-                        $w = date('w', strtotime($p['fecha_acordada']));
-                      ?>
-                      <span style="font-weight: 800; font-size: 0.8rem; color: #fff; margin-bottom: 2px;">
-                        <?= $dias[$w] ?> <?= date('d/m', strtotime($p['fecha_acordada'])) ?>
-                      </span>
-                      <strong style="font-size: 1.3rem; color: var(--amarillo-retro); line-height: 1; text-shadow: 1px 1px 0 #000;">
-                        <?= date('H:i', strtotime($p['fecha_acordada'])) ?>
-                      </strong>
-                    <?php else: ?>
-                      <span style="opacity:0.5; font-size:0.8rem;">Sin asignar</span>
-                    <?php endif; ?>
+                    <div class="match-schedule" style="padding: 0.4rem 0.6rem; min-width: 100px;">
+                      <?php if (!empty($p['fecha_acordada'])): ?>
+                        <?php 
+                          $dias = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
+                          $w = date('w', strtotime($p['fecha_acordada']));
+                        ?>
+                        <div class="schedule-date" style="font-size: 0.75rem;"><?= $dias[$w] ?> <?= date('d/m', strtotime($p['fecha_acordada'])) ?></div>
+                        <div class="schedule-time" style="font-size: 1.3rem;"><?= date('H:i', strtotime($p['fecha_acordada'])) ?></div>
+                      <?php else: ?>
+                        <div class="schedule-none" style="font-size: 0.7rem;">Sin asignar</div>
+                      <?php endif; ?>
+                    </div>
                   <?php endif; ?>
                 </div>
                 <div class="match-team right <?= !$esLocal ? 'row-me-text' : '' ?>">
