@@ -98,7 +98,11 @@ ob_start();
                     <strong><?= $p['puntos_local'] ?> - <?= $p['puntos_visitante'] ?></strong>
                   <?php else: ?>
                     <?php if (!empty($p['fecha_acordada'])): ?>
-                      <?= date('d/m', strtotime($p['fecha_acordada'])) ?><br>
+                      <?php 
+                        $dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+                        $w = date('w', strtotime($p['fecha_acordada']));
+                      ?>
+                      <?= $dias[$w] ?> <?= date('d/m', strtotime($p['fecha_acordada'])) ?><br>
                       <strong><?= date('H:i', strtotime($p['fecha_acordada'])) ?></strong>
                     <?php else: ?>
                       <span style="opacity:0.5; font-size:0.75rem;">Sin<br>asignar</span>

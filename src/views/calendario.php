@@ -42,7 +42,11 @@ $pageTitle = "Calendario Oficial – Golstalgia";
                                     <?php else: ?>
                                         <div class="match-vs" style="font-size:0.75rem; text-align:center; line-height:1.3; min-width:60px;">
                                             <?php if (!empty($p['fecha_acordada'])): ?>
-                                                <?= date('d/m', strtotime($p['fecha_acordada'])) ?><br>
+                                                <?php 
+                                                  $dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+                                                  $w = date('w', strtotime($p['fecha_acordada']));
+                                                ?>
+                                                <?= $dias[$w] ?> <?= date('d/m', strtotime($p['fecha_acordada'])) ?><br>
                                                 <strong><?= date('H:i', strtotime($p['fecha_acordada'])) ?></strong>
                                             <?php else: ?>
                                                 <span style="opacity:0.45; font-size:0.7rem;">Sin<br>asignar</span>
