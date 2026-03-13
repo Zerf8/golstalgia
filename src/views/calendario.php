@@ -40,7 +40,14 @@ $pageTitle = "Calendario Oficial – Golstalgia";
                                     <?php if ($p['estado'] === 'jugada'): ?>
                                         <div class="match-score" style="font-size: 1rem; width: 60px;"><?= $p['puntos_local'] ?> - <?= $p['puntos_visitante'] ?></div>
                                     <?php else: ?>
-                                        <div class="match-vs" style="font-size: 0.9rem; width: 60px;">VS</div>
+                                        <div class="match-vs" style="font-size:0.75rem; text-align:center; line-height:1.3; min-width:60px;">
+                                            <?php if (!empty($p['fecha_acordada'])): ?>
+                                                <?= date('d/m', strtotime($p['fecha_acordada'])) ?><br>
+                                                <strong><?= date('H:i', strtotime($p['fecha_acordada'])) ?></strong>
+                                            <?php else: ?>
+                                                <span style="opacity:0.45; font-size:0.7rem;">Sin<br>asignar</span>
+                                            <?php endif; ?>
+                                        </div>
                                     <?php endif; ?>
                                     <div class="match-team right" style="font-size: 0.95rem;"><?= htmlspecialchars($p['nombre_visitante']) ?></div>
                                 </div>

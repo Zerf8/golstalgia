@@ -47,7 +47,14 @@ $pageTitle = "Golstalgia – La Liga Trivial de Fútbol Retro";
               <?php foreach ($partidasProxima as $p): ?>
                 <div class="match-row">
                   <div class="match-team"><?= htmlspecialchars($p['nombre_local']) ?></div>
-                  <div class="match-vs">VS</div>
+                  <div class="match-vs" style="font-size:0.75rem; text-align:center; line-height:1.2;">
+                    <?php if ($p['fecha_acordada']): ?>
+                      <?= date('d/m', strtotime($p['fecha_acordada'])) ?><br>
+                      <strong><?= date('H:i', strtotime($p['fecha_acordada'])) ?></strong>
+                    <?php else: ?>
+                      <span style="opacity:0.5; font-size:0.7rem;">Sin<br>asignar</span>
+                    <?php endif; ?>
+                  </div>
                   <div class="match-team right"><?= htmlspecialchars($p['nombre_visitante']) ?></div>
                 </div>
               <?php endforeach; ?>

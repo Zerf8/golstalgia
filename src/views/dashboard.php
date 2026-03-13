@@ -93,11 +93,16 @@ ob_start();
                 <div class="match-team <?= $esLocal ? 'row-me-text' : '' ?>">
                   J<?= $p['jornada_numero'] ?>: <?= htmlspecialchars($p['nombre_local']) ?>
                 </div>
-                <div class="match-score">
+                <div class="match-score" style="min-width: 60px; font-size: 0.85rem; line-height: 1.2;">
                   <?php if ($p['estado'] === 'jugada'): ?>
-                    <?= $p['puntos_local'] ?> - <?= $p['puntos_visitante'] ?>
+                    <strong><?= $p['puntos_local'] ?> - <?= $p['puntos_visitante'] ?></strong>
                   <?php else: ?>
-                    VS
+                    <?php if (!empty($p['fecha_acordada'])): ?>
+                      <?= date('d/m', strtotime($p['fecha_acordada'])) ?><br>
+                      <strong><?= date('H:i', strtotime($p['fecha_acordada'])) ?></strong>
+                    <?php else: ?>
+                      <span style="opacity:0.5; font-size:0.75rem;">Sin<br>asignar</span>
+                    <?php endif; ?>
                   <?php endif; ?>
                 </div>
                 <div class="match-team right <?= !$esLocal ? 'row-me-text' : '' ?>">
