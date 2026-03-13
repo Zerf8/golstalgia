@@ -11,8 +11,21 @@ $pageTitle = "Calendario Oficial – Golstalgia";
             <?php $j = $item['jornada']; $partidas = $item['partidas']; ?>
             <div class="card" style="margin-bottom: 2rem;">
                 <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-                    <span>JORNADA <?= $j['numero'] ?></span>
-                    <?php if ($j['activa']): ?>
+                    <span>
+                        JORNADA <?= $j['numero'] ?>
+                        <?php if ($j['fecha_inicio'] && $j['fecha_fin']): ?>
+                            <small style="font-weight:400; opacity:0.8; margin-left:0.5rem;">
+                                <?= date('d/m', strtotime($j['fecha_inicio'])) ?> – <?= date('d/m', strtotime($j['fecha_fin'])) ?>
+                            </small>
+                        <?php endif; ?>
+                    </span>
+                    <?php
+                        $hoy   = date('Y-m-d');
+                        $enCurso = $j['activa']
+                            && (!empty($j['fecha_inicio']) && !empty($j['fecha_fin']))
+                            && ($hoy >= $j['fecha_inicio'] && $hoy <= $j['fecha_fin']);
+                    ?>
+                    <?php if ($enCurso): ?>
                         <span class="badge" style="background: var(--verde-vivo); color: var(--verde-oscuro); font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 4px;">EN CURSO</span>
                     <?php endif; ?>
                 </div>
