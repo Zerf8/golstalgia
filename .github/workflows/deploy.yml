@@ -21,6 +21,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /
           security: loose
+          log-level: verbose
           exclude: |
             **/.git*
             **/.git*/**
@@ -30,4 +31,5 @@ jobs:
             .env
             README.md
             *.sqlite
+            *.zip
             database/migrations/**
