@@ -40,16 +40,16 @@ $pageTitle = "Calendario Oficial – Golstalgia";
                                     <?php if ($p['estado'] === 'jugada'): ?>
                                         <div class="match-score" style="font-size: 1rem; width: 60px;"><?= $p['puntos_local'] ?> - <?= $p['puntos_visitante'] ?></div>
                                     <?php else: ?>
-                                        <div class="match-vs" style="font-size:0.75rem; text-align:center; line-height:1.3; min-width:60px;">
+                                        <div class="match-vs" style="font-size:0.85rem; text-align:center; line-height:1.2; min-width:70px;">
                                             <?php if (!empty($p['fecha_acordada'])): ?>
                                                 <?php 
                                                   $dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
                                                   $w = date('w', strtotime($p['fecha_acordada']));
                                                 ?>
-                                                <?= $dias[$w] ?> <?= date('d/m', strtotime($p['fecha_acordada'])) ?><br>
-                                                <strong><?= date('H:i', strtotime($p['fecha_acordada'])) ?></strong>
+                                                <span style="opacity:0.8;"><?= $dias[$w] ?> <?= date('d/m', strtotime($p['fecha_acordada'])) ?></span><br>
+                                                <strong style="font-size:1.1rem; color: var(--amarillo-retro);"><?= date('H:i', strtotime($p['fecha_acordada'])) ?></strong>
                                             <?php else: ?>
-                                                <span style="opacity:0.45; font-size:0.7rem;">Sin<br>asignar</span>
+                                                <span style="opacity:0.45; font-size:0.75rem;">Sin<br>asignar</span>
                                             <?php endif; ?>
                                         </div>
                                     <?php endif; ?>

@@ -93,19 +93,19 @@ ob_start();
                 <div class="match-team <?= $esLocal ? 'row-me-text' : '' ?>">
                   J<?= $p['jornada_numero'] ?>: <?= htmlspecialchars($p['nombre_local']) ?>
                 </div>
-                <div class="match-score" style="min-width: 60px; font-size: 0.85rem; line-height: 1.2;">
+                <div class="match-score" style="min-width: 80px; font-size: 0.9rem; line-height: 1.2; text-align: center;">
                   <?php if ($p['estado'] === 'jugada'): ?>
-                    <strong><?= $p['puntos_local'] ?> - <?= $p['puntos_visitante'] ?></strong>
+                    <strong style="font-size: 1.2rem;"><?= $p['puntos_local'] ?> - <?= $p['puntos_visitante'] ?></strong>
                   <?php else: ?>
                     <?php if (!empty($p['fecha_acordada'])): ?>
                       <?php 
                         $dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
                         $w = date('w', strtotime($p['fecha_acordada']));
                       ?>
-                      <?= $dias[$w] ?> <?= date('d/m', strtotime($p['fecha_acordada'])) ?><br>
-                      <strong><?= date('H:i', strtotime($p['fecha_acordada'])) ?></strong>
+                      <span style="font-size: 0.8rem; opacity: 0.8;"><?= $dias[$w] ?> <?= date('d/m', strtotime($p['fecha_acordada'])) ?></span><br>
+                      <strong style="font-size: 1.1rem; color: var(--amarillo-retro);"><?= date('H:i', strtotime($p['fecha_acordada'])) ?></strong>
                     <?php else: ?>
-                      <span style="opacity:0.5; font-size:0.75rem;">Sin<br>asignar</span>
+                      <span style="opacity:0.5; font-size:0.8rem;">Sin<br>asignar</span>
                     <?php endif; ?>
                   <?php endif; ?>
                 </div>
