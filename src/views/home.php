@@ -50,12 +50,13 @@ $pageTitle = "Golstalgia – La Liga Trivial de Fútbol Retro";
                   <div class="match-vs" style="font-size:0.9rem; text-align:center; line-height:1.2; min-width:80px;">
                     <?php if ($p['fecha_acordada']): ?>
                       <?php 
-                        $dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+                        $dias = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
                         $w = date('w', strtotime($p['fecha_acordada']));
                       ?>
-                      <span style="font-size: 0.8rem; opacity: 0.9;"><?= $dias[$w] ?></span><br>
-                      <span style="font-weight: 700; color: var(--amarillo-retro);"><?= date('d/m', strtotime($p['fecha_acordada'])) ?></span><br>
-                      <strong style="font-size: 1.1rem;"><?= date('H:i', strtotime($p['fecha_acordada'])) ?></strong>
+                      <span style="font-weight: 700; color: var(--amarillo-retro); font-size: 0.85rem;">
+                        <?= $dias[$w] ?> <?= date('d/m', strtotime($p['fecha_acordada'])) ?>
+                      </span><br>
+                      <strong style="font-size: 1.2rem; color: #fff; text-shadow: 1px 1px 2px #000;"><?= date('H:i', strtotime($p['fecha_acordada'])) ?></strong>
                     <?php else: ?>
                       <span style="opacity:0.5; font-size:0.8rem;">Sin<br>asignar</span>
                     <?php endif; ?>

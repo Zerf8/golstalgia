@@ -99,11 +99,13 @@ ob_start();
                   <?php else: ?>
                     <?php if (!empty($p['fecha_acordada'])): ?>
                       <?php 
-                        $dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+                        $dias = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
                         $w = date('w', strtotime($p['fecha_acordada']));
                       ?>
-                      <span style="font-size: 0.8rem; opacity: 0.8;"><?= $dias[$w] ?> <?= date('d/m', strtotime($p['fecha_acordada'])) ?></span><br>
-                      <strong style="font-size: 1.1rem; color: var(--amarillo-retro);"><?= date('H:i', strtotime($p['fecha_acordada'])) ?></strong>
+                      <span style="font-weight: 700; font-size: 0.8rem;">
+                        <?= $dias[$w] ?> <?= date('d/m', strtotime($p['fecha_acordada'])) ?>
+                      </span><br>
+                      <strong style="font-size: 1.2rem; color: var(--amarillo-retro); text-shadow: 1px 1px 0 #000;"><?= date('H:i', strtotime($p['fecha_acordada'])) ?></strong>
                     <?php else: ?>
                       <span style="opacity:0.5; font-size:0.8rem;">Sin<br>asignar</span>
                     <?php endif; ?>
