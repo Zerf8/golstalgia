@@ -47,18 +47,20 @@ $pageTitle = "Golstalgia – La Liga Trivial de Fútbol Retro";
               <?php foreach ($partidasProxima as $p): ?>
                 <div class="match-row">
                   <div class="match-team"><?= htmlspecialchars($p['nombre_local']) ?></div>
-                  <div class="match-vs" style="font-size:0.9rem; text-align:center; line-height:1.2; min-width:80px;">
+                  <div class="match-vs" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 100px; padding: 0.2rem 0;">
                     <?php if ($p['fecha_acordada']): ?>
                       <?php 
                         $dias = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
                         $w = date('w', strtotime($p['fecha_acordada']));
                       ?>
-                      <span style="font-weight: 700; color: var(--amarillo-retro); font-size: 0.85rem;">
+                      <span style="font-weight: 800; color: var(--amarillo-retro); font-size: 0.85rem; display: block; margin-bottom: 2px;">
                         <?= $dias[$w] ?> <?= date('d/m', strtotime($p['fecha_acordada'])) ?>
-                      </span><br>
-                      <strong style="font-size: 1.2rem; color: #fff; text-shadow: 1px 1px 2px #000;"><?= date('H:i', strtotime($p['fecha_acordada'])) ?></strong>
+                      </span>
+                      <strong style="font-size: 1.3rem; color: #fff; line-height: 1; display: block; text-shadow: 1px 1px 2px #000;">
+                        <?= date('H:i', strtotime($p['fecha_acordada'])) ?>
+                      </strong>
                     <?php else: ?>
-                      <span style="opacity:0.5; font-size:0.8rem;">Sin<br>asignar</span>
+                      <span style="opacity:0.5; font-size:0.8rem;">Sin asignar</span>
                     <?php endif; ?>
                   </div>
                   <div class="match-team right"><?= htmlspecialchars($p['nombre_visitante']) ?></div>

@@ -93,21 +93,23 @@ ob_start();
                 <div class="match-team <?= $esLocal ? 'row-me-text' : '' ?>">
                   J<?= $p['jornada_numero'] ?>: <?= htmlspecialchars($p['nombre_local']) ?>
                 </div>
-                <div class="match-score" style="min-width: 80px; font-size: 0.9rem; line-height: 1.2; text-align: center;">
+                <div class="match-score" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 90px; padding: 0.3rem 0;">
                   <?php if ($p['estado'] === 'jugada'): ?>
-                    <strong style="font-size: 1.2rem;"><?= $p['puntos_local'] ?> - <?= $p['puntos_visitante'] ?></strong>
+                    <strong style="font-size: 1.3rem; line-height: 1;"><?= $p['puntos_local'] ?> - <?= $p['puntos_visitante'] ?></strong>
                   <?php else: ?>
                     <?php if (!empty($p['fecha_acordada'])): ?>
                       <?php 
                         $dias = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
                         $w = date('w', strtotime($p['fecha_acordada']));
                       ?>
-                      <span style="font-weight: 700; font-size: 0.8rem;">
+                      <span style="font-weight: 800; font-size: 0.8rem; color: #fff; margin-bottom: 2px;">
                         <?= $dias[$w] ?> <?= date('d/m', strtotime($p['fecha_acordada'])) ?>
-                      </span><br>
-                      <strong style="font-size: 1.2rem; color: var(--amarillo-retro); text-shadow: 1px 1px 0 #000;"><?= date('H:i', strtotime($p['fecha_acordada'])) ?></strong>
+                      </span>
+                      <strong style="font-size: 1.3rem; color: var(--amarillo-retro); line-height: 1; text-shadow: 1px 1px 0 #000;">
+                        <?= date('H:i', strtotime($p['fecha_acordada'])) ?>
+                      </strong>
                     <?php else: ?>
-                      <span style="opacity:0.5; font-size:0.8rem;">Sin<br>asignar</span>
+                      <span style="opacity:0.5; font-size:0.8rem;">Sin asignar</span>
                     <?php endif; ?>
                   <?php endif; ?>
                 </div>
