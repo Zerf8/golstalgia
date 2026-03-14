@@ -77,14 +77,23 @@
               <?php if (empty($recentNotifs)): ?>
                 <p class="notif-empty">No tienes notificaciones</p>
               <?php else: ?>
-                <?php foreach ($recentNotifs as $n): ?>
-                  <div class="notif-item <?= $n['leida'] ? '' : 'is-unread' ?>" data-id="<?= $n['id'] ?>">
-                    <div class="notif-type notif-type-<?= $n['tipo'] ?>"></div>
-                    <div class="notif-content">
-                      <p><?= htmlspecialchars($n['mensaje']) ?></p>
-                      <small><?= date('d/m H:i', strtotime($n['created_at'])) ?></small>
+                <?php foreach ($recentNotifs as $n): 
+                   $notifUrl = $n['partida_id'] ? "/dashboard#match-" . $n['partida_id'] : "#";
+                ?>
+                  <a href="<?= $notifUrl ?>" class="notif-item-link">
+                    <div class="notif-item <?= $n['leida'] ? '' : 'is-unread' ?>" data-id="<?= $n['id'] ?>">
+                      <div class="notif-type notif-type-<?= $n['tipo'] ?>"></div>
+                      <div class="notif-content">
+                        <p>
+                          <?php if ($n['jornada_numero']): ?>
+                            <strong class="text-amarillo">J<?= $n['jornada_numero'] ?>:</strong> 
+                          <?php endif; ?>
+                          <?= htmlspecialchars($n['mensaje']) ?>
+                        </p>
+                        <small><?= date('d/m H:i', strtotime($n['created_at'])) ?></small>
+                      </div>
                     </div>
-                  </div>
+                  </a>
                 <?php endforeach; ?>
               <?php endif; ?>
             </div>

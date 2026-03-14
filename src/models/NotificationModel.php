@@ -27,7 +27,13 @@ class NotificationModel
     public function getByUser(int $usuarioId, int $limit = 10): array
     {
         $stmt = $this->db->prepare(
-            "SELECT * FROM notificaciones WHERE usuario_id = ? ORDER BY created_at DESC LIMIT ?"
+            "SELECT n.*, j.numero as jornada_numero 
+             FROM notificaciones n
+             LEFT JOIN partidas p ON p.id = n.partida_id
+             LEFT JOIN jornadas j ON j.id = p.jornada_id
+             WHERE n.usuario_id = ? 
+             ORDER BY n.created_at DESC 
+             LIMIT ?"
         );
         $stmt->execute([$usuarioId, $limit]);
         return $stmt->fetchAll();
