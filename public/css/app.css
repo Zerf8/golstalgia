@@ -1096,16 +1096,20 @@ tr.row-me td:first-child { border-left: 3px solid var(--amarillo-retro); }
 @media (max-width: 900px) {
   .admin-layout {
     grid-template-columns: 1fr;
-    padding: 1rem;
+    padding: 1rem 0.5rem;
     gap: 1.5rem;
   }
   .admin-sidebar {
     position: sticky;
-    top: 60px;
+    top: 70px; /* Aligned with mobile header height */
     z-index: 100;
     margin-bottom: 0.5rem;
     padding: 0.8rem;
-    border-radius: 12px;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    width: 100vw;
+    margin-left: -0.5rem; /* Break out of padding */
   }
   .sidebar-title { display: none !important; }
   .sidebar-menu {
@@ -1129,6 +1133,14 @@ tr.row-me td:first-child { border-left: 3px solid var(--amarillo-retro); }
   .admin-flex-form { flex-direction: column !important; align-items: stretch !important; }
   .admin-flex-form > * { width: 100% !important; }
   .admin-flex-form .btn { height: auto !important; padding: 1rem !important; }
+
+  /* Table column hiding in Admin */
+  .table-wrap th:nth-child(1), .table-wrap td:nth-child(1), /* # */
+  .table-wrap th:nth-child(3), .table-wrap td:nth-child(3), /* Email or details */
+  .table-wrap th:nth-child(6), .table-wrap td:nth-child(6)  /* Dates or secondary */
+  {
+    display: none;
+  }
 }
 
 /* Global Table Wrap */
