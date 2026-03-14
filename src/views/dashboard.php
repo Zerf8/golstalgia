@@ -98,7 +98,7 @@ ob_start();
                     $headerFecha = $diasLabels[$wBase] . ' ' . date('d/m', strtotime($fBase));
                 }
               ?>
-              <div class="match-card">
+              <div class="match-card" id="match-<?= $p['id'] ?>">
                 <div class="match-header">
                   <span class="match-jornada">JORNADA <?= $p['jornada_numero'] ?></span>
                   <?php if ($headerFecha): ?>
