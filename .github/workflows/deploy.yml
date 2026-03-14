@@ -23,4 +23,4 @@ jobs:
           local_path: "./"
           remote_path: "/domains/golstalgia.com/public_html/"
           delete_remote_files: false
-          sftpArgs: '-o ConnectTimeout=5'
+          sftpArgs: '-vvv -o ConnectTimeout=20 -o StrictHostKeyChecking=no'
