@@ -1,4 +1,4 @@
-name: 🚀 Deploy to Hostinger
+name: 🚀 Deploy via SFTP to Hostinger
 
 on:
   push:
@@ -6,30 +6,30 @@ on:
       - main
 
 jobs:
-  web-deploy:
-    name: 🎉 Deploy
+  sftp-deploy:
+    name: 🎉 SFTP Deploy
     runs-on: ubuntu-latest
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
 
-      - name: 📂 Sync files
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: 📂 Sync files via SFTP
+        uses: pressidium/sftp-deploy@v1
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /
-          security: loose
-          log-level: verbose
+          host: ${{ secrets.SFTP_HOST }}
+          port: ${{ secrets.SFTP_PORT }}
+          user: ${{ secrets.SFTP_USER }}
+          pass: ${{ secrets.SFTP_PASS }}
+          local_path: './'
+          remote_path: '/domains/golstalgia.com/public_html/'
           exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/docker/**
+            .git*
+            node_modules
+            docker
             docker-compose.yml
             .env
             README.md
             *.sqlite
             *.zip
-            database/migrations/**
+            database/migrations
+            .ftp-deploy-sync-state.json
