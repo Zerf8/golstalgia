@@ -1,4 +1,7 @@
-name: 🚀 Deploy via SFTP to Hostinger
+name: 🚀 Deploy (via Hostinger Git Auto-Deploy)
+
+# Hostinger handles auto-deploy directly from GitHub via Git integration.
+# This workflow is kept as a reference but deployment is managed by Hostinger hPanel.
 
 on:
   push:
@@ -6,28 +9,9 @@ on:
       - main
 
 jobs:
-  sftp-deploy:
-    name: 🎉 SFTP Deploy
+  notify:
+    name: ✅ Push recibido
     runs-on: ubuntu-latest
     steps:
-      - name: 🚚 Get latest code
-        uses: actions/checkout@v4
-
-      - name: 🔑 Test SSH Connection
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_key
-          chmod 600 ~/.ssh/id_key
-          ssh -i ~/.ssh/id_key -p 65002 -o StrictHostKeyChecking=no ${{ secrets.SFTP_USER }}@${{ secrets.SFTP_HOST }} "pwd"
-
-      - name: 📂 Deploy via SFTP
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
-        with:
-          username: ${{ secrets.SFTP_USER }}
-          server: ${{ secrets.SFTP_HOST }}
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 65002
-          local_path: "./"
-          remote_path: "/domains/golstalgia.com/public_html/"
-          delete_remote_files: false
-          sftpArgs: '-vvv -o ConnectTimeout=20 -o StrictHostKeyChecking=no'
+      - name: 📋 Confirmar push
+        run: echo "Push a main recibido. Hostinger se encarga del auto-deploy via Git integration."
