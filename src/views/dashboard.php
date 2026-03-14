@@ -139,7 +139,7 @@ ob_start();
                 <!-- Bloque de propuesta (AHORA FUERA DE MATCH-ROW PARA EVITAR FLEX CLASH) -->
                 <?php if ($p['estado'] === 'pendiente' || $p['estado'] === 'acordada'): ?>
                   <?php 
-                    $showExpanded = ($p['estado'] === 'acordada' || !empty($p['rival_slots']));
+                    $showExpanded = ($p['estado'] === 'acordada' || !empty($p['rival_slots']) || !empty($p['mis_slots']));
                   ?>
                   <div id="proposal-<?= $p['id'] ?>" class="proposal-container" style="<?= $showExpanded ? 'display:grid;' : 'display:none;' ?> width: 100%; padding: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.15);">
                     <form action="/dashboard/disponibilidad/<?= $p['id'] ?>" method="POST" id="form-disponibilidad-<?= $p['id'] ?>">
