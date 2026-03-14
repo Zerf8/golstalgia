@@ -124,6 +124,7 @@ body {
   box-shadow: 4px 4px 0 var(--negro-carbon);
 }
 
+.header-actions { display: flex; align-items: center; }
 .header-user { display: flex; align-items: center; gap: 1.5rem; }
 .user-name { font-weight: 600; color: var(--amarillo-retro); }
 
@@ -1196,3 +1197,72 @@ tr.row-me td:first-child { border-left: 3px solid var(--amarillo-retro); }
 .badge-agreement { background: var(--verde-vivo); color: var(--negro-carbon); }
 .badge-rival { background: #8e44ad; color: #fff; }
 .badge-occupied { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); }
+
+/* ─── NOTIFICACIONES ─────────── */
+.notifications-wrapper { position: relative; margin-right: 1.5rem; }
+.notif-btn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; position: relative; transition: 0.2s;
+  font-size: 1.2rem;
+}
+.notif-btn:hover { background: rgba(255,255,255,0.1); transform: scale(1.05); }
+
+.notif-badge {
+  position: absolute; top: -2px; right: -2px;
+  background: var(--rojo-tarjeta); color: white;
+  font-size: 0.65rem; font-weight: 900;
+  min-width: 18px; height: 18px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--negro-carbon);
+}
+
+.notif-dropdown {
+  position: absolute; top: calc(100% + 15px); right: 0;
+  width: 320px; max-height: 450px;
+  background: rgba(30, 30, 30, 0.95);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  display: none; flex-direction: column;
+  z-index: 1000; overflow: hidden;
+}
+.notif-dropdown.show { display: flex; }
+
+.notif-header {
+  padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--font-head); font-weight: 900; font-size: 0.8rem;
+  text-transform: uppercase; letter-spacing: 1px; color: var(--amarillo-retro);
+}
+.notif-header .btn-text {
+  background: none; border: none; color: white; font-size: 0.6rem;
+  opacity: 0.6; cursor: pointer; text-decoration: underline;
+}
+.notif-header .btn-text:hover { opacity: 1; }
+
+.notif-body { overflow-y: auto; flex: 1; }
+.notif-empty { padding: 2rem; text-align: center; opacity: 0.4; font-size: 0.8rem; }
+
+.notif-item {
+  padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.03);
+  display: flex; gap: 0.8rem; transition: 0.2s; cursor: pointer;
+}
+.notif-item:hover { background: rgba(255,255,255,0.03); }
+.notif-item.is-unread { background: rgba(46, 204, 113, 0.05); }
+
+.notif-type { width: 10px; height: 10px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+.notif-type-propuesta { background: #f1c40f; }
+.notif-type-acuerdo { background: var(--verde-vivo); }
+.notif-type-cancelacion { background: var(--rojo-tarjeta); }
+
+.notif-content p { margin: 0; font-size: 0.85rem; line-height: 1.4; }
+.notif-content small { display: block; margin-top: 4px; opacity: 0.4; font-size: 0.7rem; }
+
+@media (max-width: 768px) {
+  .notif-dropdown { position: fixed; top: 70px; left: 10px; right: 10px; width: auto; max-height: 70vh; }
+  .notifications-wrapper { margin-right: 0.8rem; }
+}

@@ -51,7 +51,7 @@
       </div>
     </nav>
 
-    <div class="header-user">
+    <div class="header-actions">
       <?php if (Auth::check()): 
           $notifModel = new NotificationModel();
           $unreadCount = $notifModel->getUnreadCount(Auth::user()['id']);
@@ -90,16 +90,20 @@
             </div>
           </div>
         </div>
-
-        <span class="user-name"><?= htmlspecialchars(Auth::user()['nombre']) ?></span>
-        <?php if (Auth::isAdmin()): ?>
-          <span class="badge-admin">ADMIN</span>
-        <?php endif; ?>
-        <a href="/auth/logout" class="btn-logout">Salir</a>
-      <?php else: ?>
-        <a href="/auth/login" class="nav-link">Entrar</a>
-        <a href="/auth/registro" class="btn btn-primary btn-sm">Regístrate</a>
       <?php endif; ?>
+
+      <div class="header-user">
+        <?php if (Auth::check()): ?>
+          <span class="user-name"><?= htmlspecialchars(Auth::user()['nombre']) ?></span>
+          <?php if (Auth::isAdmin()): ?>
+            <span class="badge-admin">ADMIN</span>
+          <?php endif; ?>
+          <a href="/auth/logout" class="btn-logout">Salir</a>
+        <?php else: ?>
+          <a href="/auth/login" class="nav-link">Entrar</a>
+          <a href="/auth/registro" class="btn btn-primary btn-sm">Regístrate</a>
+        <?php endif; ?>
+      </div>
     </div>
 
     <!-- Hamburger button -->
