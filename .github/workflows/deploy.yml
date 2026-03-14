@@ -13,20 +13,14 @@ jobs:
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
 
-      - name: 📂 Sync files via SFTP
-        uses: appleboy/scp-action@v0.1.7
+      - name: 📂 Deploy via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
         with:
-          host: ${{ secrets.SFTP_HOST }}
-          port: ${{ secrets.SFTP_PORT }}
           username: ${{ secrets.SFTP_USER }}
-          password: ${{ secrets.SFTP_PASS }}
-          source: "./*"
-          target: "/domains/golstalgia.com/public_html/"
-          rm: false
-          strip_components: 0
-          # Exclusiones se manejan enviando solo lo necesario o por el filtro
-          # Para evitar subir todo el repo, especificamos los directorios clave
-          # o usamos la sintaxis de negación si la acción lo soporta bien.
-          # En este caso, subiremos todo y la acción sobreescribirá.
-          # Excluímos manualmente los pesados/sensibles:
-          overwrite: true
+          server: ${{ secrets.SFTP_HOST }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 65002
+          local_path: "./"
+          remote_path: "/domains/golstalgia.com/public_html/"
+          delete_remote_files: false
+          sftpArgs: '-o ConnectTimeout=5'
