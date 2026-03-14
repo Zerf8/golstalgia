@@ -55,7 +55,7 @@ ob_start();
                   <a href="/admin/usuarios/<?= $u['id'] ?>/editar" class="btn btn-sm btn-dark">Editar</a>
                   <?php if ($u['id'] !== Auth::user()['id'] && $u['activo']): ?>
                   <form method="POST" action="/admin/usuarios/<?= $u['id'] ?>/eliminar" style="display:inline;"
-                        onsubmit="return confirm('¿Desactivar a <?= htmlspecialchars($u['nombre']) ?>?')">
+                        onsubmit="return confirm('⚠️ ¡ATENCIÓN! ¿Estás seguro de que quieres dar de BAJA a <?= htmlspecialchars($u['nombre']) ?>? El usuario ya no podrá acceder a la liga.')">
                     <input type="hidden" name="csrf_token" value="<?= Auth::csrf() ?>">
                     <button type="submit" class="btn btn-sm btn-rojo">Baja</button>
                   </form>

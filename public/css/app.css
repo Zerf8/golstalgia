@@ -267,6 +267,54 @@ body {
   box-shadow: 0 0px 0 #24a159;
 }
 
+.btn-rojo {
+  background: var(--rojo-pasion);
+  color: white;
+  box-shadow: 0 4px 0 #c0392b;
+}
+.btn-rojo:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #c0392b; filter: brightness(1.1); }
+.btn-rojo:active { transform: translateY(2px); box-shadow: 0 0px 0 #c0392b; }
+
+.btn-verde {
+  background: var(--verde-vivo);
+  color: var(--verde-oscuro);
+  box-shadow: 0 4px 0 #27ae60;
+}
+.btn-verde:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #27ae60; filter: brightness(1.1); }
+.btn-verde:active { transform: translateY(2px); box-shadow: 0 0px 0 #27ae60; }
+
+.btn-dark {
+  background: rgba(255,255,255,0.1);
+  color: white;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.5);
+}
+.btn-dark:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); box-shadow: 0 6px 0 rgba(0,0,0,0.5); }
+.btn-dark:active { transform: translateY(2px); box-shadow: 0 0px 0 rgba(0,0,0,0.5); }
+
+.btn-sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  border-radius: 6px;
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.badge-verde   { background: var(--verde-vivo); color: var(--verde-oscuro); }
+.badge-rojo    { background: var(--rojo-pasion); color: #fff; }
+.badge-amarillo { background: var(--amarillo-retro); color: var(--negro-carbon); }
+.badge-gris     { background: rgba(255,255,255,0.1); color: #aaa; }
+
 .login-separator {
   text-align: center;
   margin: 2rem 0;
@@ -664,8 +712,18 @@ tr.row-me td:first-child { border-left: 3px solid var(--amarillo-retro); }
   /* Forms */
   .form-group { margin-bottom: 1rem; }
   .input-field { font-size: 16px; } /* Prevents zoom on iOS */
-  .btn { width: 100%; justify-content: center; }
+  .btn:not(.btn-sm) { width: 100%; justify-content: center; }
   .btn-google { width: 100%; }
+
+  /* Table Actions specifically for Admin */
+  .table-wrap td:last-child {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    min-width: 150px;
+  }
+  .table-wrap td:last-child form { display: inline-flex; }
 
 
 @media (max-width: 600px) {
