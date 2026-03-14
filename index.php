@@ -1,5 +1,5 @@
 <?php
-
+// Trigger deployment: 2026-03-14 22:19
 require_once __DIR__ . '/config/app.php';
 require_once __DIR__ . '/config/Database.php';
 
