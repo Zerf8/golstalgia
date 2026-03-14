@@ -13,6 +13,13 @@ jobs:
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
 
+      - name: 🔑 Test SSH Connection
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_key
+          chmod 600 ~/.ssh/id_key
+          ssh -i ~/.ssh/id_key -p 65002 -o StrictHostKeyChecking=no ${{ secrets.SFTP_USER }}@${{ secrets.SFTP_HOST }} "pwd"
+
       - name: 📂 Deploy via SFTP
         uses: wlixcc/SFTP-Deploy-Action@v1.2.6
         with:
