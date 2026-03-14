@@ -1154,50 +1154,59 @@ tr.row-me td:first-child { border-left: 3px solid var(--amarillo-retro); }
 @media (max-width: 900px) {
   .admin-layout {
     grid-template-columns: 1fr;
-    padding: 1rem 0.5rem;
-    gap: 1.5rem;
+    padding: 1rem 0.5rem; /* Reduced horizontal padding */
+    gap: 1rem;
+    width: 100%;
+    margin: 0;
+  }
+  .admin-main {
+    width: 100%;
+    padding: 0 0.25rem;
   }
   .admin-sidebar {
     position: sticky;
     top: 70px; /* Aligned with mobile header height */
     z-index: 100;
     margin-bottom: 0.5rem;
-    padding: 0.8rem;
+    padding: 0.6rem;
     border-radius: 0;
-    border-left: none;
-    border-right: none;
-    width: 100vw;
-    margin-left: -0.5rem; /* Break out of padding */
+    width: calc(100% + 1rem); /* Full width including offset */
+    margin-left: -0.5rem; 
+    border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
   }
+  /* ... previous sidebar styles ... */
   .sidebar-title { display: none !important; }
   .sidebar-menu {
     flex-direction: row;
     overflow-x: auto;
     padding-bottom: 0.3rem;
-    gap: 0.5rem;
+    gap: 0.4rem;
     justify-content: flex-start;
     -webkit-overflow-scrolling: touch;
   }
   .sidebar-link {
     white-space: nowrap;
-    font-size: 0.85rem;
-    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
+    padding: 0.5rem 0.8rem;
     flex-shrink: 0;
   }
-  .sidebar-link:hover { transform: none; }
-  
-  /* Admin Grid Helpers */
+  /* ... Admin Grid & Table column hiding ... */
   .admin-grid-2 { grid-template-columns: 1fr !important; }
   .admin-flex-form { flex-direction: column !important; align-items: stretch !important; }
   .admin-flex-form > * { width: 100% !important; }
-  .admin-flex-form .btn { height: auto !important; padding: 1rem !important; }
-
-  /* Table column hiding in Admin */
-  .table-wrap th:nth-child(1), .table-wrap td:nth-child(1), /* # */
-  .table-wrap th:nth-child(3), .table-wrap td:nth-child(3), /* Email or details */
-  .table-wrap th:nth-child(6), .table-wrap td:nth-child(6)  /* Dates or secondary */
-  {
+  
+  .table-wrap th:nth-child(1), .table-wrap td:nth-child(1),
+  .table-wrap th:nth-child(3), .table-wrap td:nth-child(3),
+  .table-wrap th:nth-child(6), .table-wrap td:nth-child(6) {
     display: none;
+  }
+  
+  /* Action alignment in mobile tables */
+  .table-wrap td:last-child {
+    justify-content: center;
+    padding: 0.5rem;
+    min-width: 120px;
   }
 }
 
