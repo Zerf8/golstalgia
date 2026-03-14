@@ -338,6 +338,23 @@ class AdminController
         exit;
     }
 
+    public function partidaPostpone(int $id): void
+    {
+        Auth::requireAdmin();
+        $this->verifyCsrf();
+
+        $model = new PartidaModel();
+        $partida = $model->findById($id);
+        if (!$partida) { $this->notFound(); return; }
+
+        $model->updateEstado($id, 'aplazada');
+
+        $_SESSION['flash_success'] = 'Partido marcado como APLAZADO.';
+        $jornada = (new JornadaModel())->findById($partida['jornada_id']);
+        header("Location: /admin/ligas/{$jornada['liga_id']}/jornadas");
+        exit;
+    }
+
     // ─── HORARIOS ─────────────────────────────────────────
     public function horarios(): void
     {

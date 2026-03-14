@@ -54,6 +54,7 @@ $router->post('/admin/jornadas/:id/fechas',            [AdminController::class, 
 // ─── Admin — Resultados ───────────────────────────────
 $router->get( '/admin/partidas/:id/resultado',         [AdminController::class, 'resultadoForm']);
 $router->post('/admin/partidas/:id/resultado/guardar', [AdminController::class, 'resultadoStore']);
+$router->post('/admin/partidas/:id/aplazar',          [AdminController::class, 'partidaPostpone']);
 
 // ─── Admin — Horarios ─────────────────────────────────
 $router->get( '/admin/horarios',                       [AdminController::class, 'horarios']);

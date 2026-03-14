@@ -70,8 +70,14 @@ ob_start();
                   <span class="badge badge-<?= $p['estado'] === 'acordada' ? 'amarillo' : 'gris' ?>">
                     <?= strtoupper($p['estado']) ?>
                   </span>
-                  <div style="margin-top:0.25rem;">
+                  <div style="margin-top:0.25rem; display:flex; gap:0.25rem; justify-content:center;">
                     <a href="/admin/partidas/<?= $p['id'] ?>/resultado" class="btn btn-sm btn-verde">Resultado</a>
+                    <?php if ($p['estado'] !== 'aplazada'): ?>
+                      <form action="/admin/partidas/<?= $p['id'] ?>/aplazar" method="POST" onsubmit="return confirm('¿Seguro que quieres aplazar este partido? Podrán elegir horario en cualquier semana.')">
+                        <?= Auth::csrfInput() ?>
+                        <button type="submit" class="btn btn-sm btn-gris" title="Aplazar partido">⏳</button>
+                      </form>
+                    <?php endif; ?>
                   </div>
                 </div>
               <?php endif; ?>

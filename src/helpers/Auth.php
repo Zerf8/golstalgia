@@ -78,4 +78,9 @@ class Auth
     {
         return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
     }
+
+    public static function csrfInput(): string
+    {
+        return '<input type="hidden" name="csrf_token" value="' . self::csrf() . '">';
+    }
 }
