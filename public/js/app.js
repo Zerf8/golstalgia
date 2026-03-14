@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.addEventListener('click', function (e) {
-      if (!notifDropdown.contains(e.target) && e.target !== notifBtn) {
+      if (!notifDropdown.contains(e.target) && !e.target.closest('#notif-btn')) {
         notifDropdown.classList.remove('show');
       }
     });
