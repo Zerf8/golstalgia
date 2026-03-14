@@ -136,7 +136,11 @@
   <p style="font-size: 0.7rem; opacity: 0.6; margin-top: 5px;">Sitio Web creado por Zerf 2026</p>
 </footer>
 
-<script src="/public/js/app.js"></script>
+<?php
+  $jsPath = $_SERVER['DOCUMENT_ROOT'] . '/public/js/app.js';
+  $jsV    = file_exists($jsPath) ? filemtime($jsPath) : time();
+?>
+<script src="/public/js/app.js?v=<?= $jsV ?>"></script>
 <script>
 const hamburger = document.getElementById('hamburger');
 const nav       = document.getElementById('main-nav');
