@@ -46,8 +46,13 @@ class DashboardController
             foreach ($misPartidas as &$p) {
                 if ($p['estado'] === 'pendiente' || $p['estado'] === 'acordada') {
                     // Calculate dates for this specific jornada
-                    // Fallback: Monday of this week + (jornada_numero - 1) weeks
-                    $fechaBase = !empty($p['fecha_inicio']) ? $p['fecha_inicio'] : date('Y-m-d', strtotime('monday this week + ' . ($p['jornada_numero'] - 1) . ' weeks'));
+                    // IF APLAZADA: Use THIS WEEK as base so they can schedule now
+                    if ($p['estado'] === 'aplazada') {
+                        $fechaBase = date('Y-m-d', strtotime('monday this week'));
+                    } else {
+                        // Fallback: Monday of this week + (jornada_numero - 1) weeks (or fecha_inicio if set)
+                        $fechaBase = !empty($p['fecha_inicio']) ? $p['fecha_inicio'] : date('Y-m-d', strtotime('monday this week + ' . ($p['jornada_numero'] - 1) . ' weeks'));
+                    }
                     
                     // Closure to normalize stored datetimes (which might be from old calculations) to THIS jornada's week
                     $normalize = function($datetimes) use ($fechaBase) {

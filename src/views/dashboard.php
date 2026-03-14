@@ -98,9 +98,15 @@ ob_start();
                     $headerFecha = $diasLabels[$wBase] . ' ' . date('d/m', strtotime($fBase));
                 }
               ?>
-              <div class="match-card" id="match-<?= $p['id'] ?>">
+              <div class="match-card <?= $p['estado'] === 'aplazada' ? 'is-postponed' : '' ?>" id="match-<?= $p['id'] ?>">
                 <div class="match-header">
-                  <span class="match-jornada">JORNADA <?= $p['jornada_numero'] ?></span>
+                  <?php if ($p['estado'] === 'aplazada'): ?>
+                    <span class="match-jornada text-amarillo">PARTIDO APLAZADO</span>
+                    <span class="notif-badge" style="position: static; vertical-align: middle; margin-left: 5px; background: var(--amarillo-retro); color: var(--negro-carbon); font-size: 0.7rem; padding: 2px 6px;">J<?= $p['jornada_numero'] ?></span>
+                  <?php else: ?>
+                    <span class="match-jornada">JORNADA <?= $p['jornada_numero'] ?></span>
+                  <?php endif; ?>
+                  
                   <?php if ($headerFecha): ?>
                     <span class="match-j-date"><?= $headerFecha ?></span>
                   <?php endif; ?>
