@@ -31,7 +31,7 @@ $dias = [
         <div class="card" style="margin-bottom: 2rem; border-color: var(--amarillo-retro);">
             <div class="card-header" style="background: rgba(241, 196, 15, 0.1);">1. Jornada y Período</div>
             <div class="card-body">
-                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; align-items: flex-end;">
+                <div class="admin-grid-2" style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; align-items: flex-end;">
                     <!-- Combo de Jornadas -->
                     <div class="form-group">
                         <label>Seleccionar Jornada</label>
@@ -47,7 +47,7 @@ $dias = [
 
                     <!-- Edición de Fechas de la Jornada -->
                     <?php if ($jornada): ?>
-                        <form action="/admin/jornadas/<?= $jornada['id'] ?>/fechas" method="POST" style="display: flex; gap: 1rem; align-items: flex-end; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
+                        <form action="/admin/jornadas/<?= $jornada['id'] ?>/fechas" method="POST" class="admin-flex-form" style="display: flex; gap: 1rem; align-items: flex-end; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
                             <input type="hidden" name="csrf_token" value="<?= Auth::csrf() ?>">
                             <div class="form-group">
                                 <label>Fecha Inicio</label>
@@ -57,7 +57,7 @@ $dias = [
                                 <label>Fecha Fin</label>
                                 <input type="date" name="fecha_fin" class="form-control" value="<?= $jornada['fecha_fin'] ?>">
                             </div>
-                            <button type="submit" class="btn btn-secondary btn-sm" style="height: 48px;">Guardar Fechas</button>
+                            <button type="submit" class="btn btn-secondary btn-sm">Guardar Fechas</button>
                         </form>
                     <?php else: ?>
                         <p style="opacity: 0.6; padding-bottom: 1rem;">Selecciona una jornada para editar sus fechas y tramos específicos.</p>
@@ -84,7 +84,7 @@ $dias = [
                 </div>
             </div>
 
-            <div class="grid-2" style="gap: 1.5rem;">
+            <div class="grid-2 admin-grid-2" style="gap: 1.5rem;">
                 <?php foreach ($dias as $num => $nombre): ?>
                     <div class="card" style="background: rgba(0,0,0,0.2);">
                         <div class="card-header" style="background: rgba(255,255,255,0.05); text-align: center; letter-spacing: 2px;">
@@ -122,7 +122,7 @@ $dias = [
         <div class="card" style="margin-top: 3rem; border-color: var(--verde-cesped); background: rgba(0,0,0,0.3);">
             <div class="card-header" style="color: var(--verde-cesped);">➕ Añadir Nuevo Tramo (Acción Rápida)</div>
             <div class="card-body">
-                <form action="/admin/horarios/guardar" method="POST" style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
+                <form action="/admin/horarios/guardar" method="POST" class="admin-flex-form" style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
                     <input type="hidden" name="csrf_token" value="<?= Auth::csrf() ?>">
                     <input type="hidden" name="jornada_id" value="<?= $jornadaId ?>">
                     
@@ -140,7 +140,7 @@ $dias = [
                         <input type="time" name="hora_inicio" class="form-control" step="1800" required>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" style="height: 48px; min-width: 200px;">Añadir Ahora</button>
+                    <button type="submit" class="btn btn-primary" style="min-width: 200px;">Añadir Ahora</button>
                 </form>
             </div>
         </div>

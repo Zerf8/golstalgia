@@ -645,8 +645,12 @@ tr.row-me td:first-child { border-left: 3px solid var(--amarillo-retro); }
   .table-compact th:nth-child(4), 
   .table-compact td:nth-child(4),
   .table-compact th:nth-child(5), 
-  .table-compact td:nth-child(5) {
-    display: none; /* Hide V, E, D on small mobile to avoid horizontal scroll */
+  .table-compact td:nth-child(5),
+  .table-compact th:nth-child(6), 
+  .table-compact td:nth-child(6),
+  .table-compact th:nth-child(7), 
+  .table-compact td:nth-child(7) {
+    display: none; /* Hide V, E, D, GF, GC on mobile */
   }
 
   /* Auth pages */
@@ -662,7 +666,7 @@ tr.row-me td:first-child { border-left: 3px solid var(--amarillo-retro); }
   .input-field { font-size: 16px; } /* Prevents zoom on iOS */
   .btn { width: 100%; justify-content: center; }
   .btn-google { width: 100%; }
-}
+
 
 @media (max-width: 600px) {
   /* Match Row: Vertical Stack */
@@ -692,6 +696,12 @@ tr.row-me td:first-child { border-left: 3px solid var(--amarillo-retro); }
   .match-team.right {
     order: 3;
     text-align: center !important;
+  }
+  
+  /* Admin Match Card specific fixes for mobile */
+  .admin-main .match-card {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }
   /* Stats */
@@ -1087,22 +1097,49 @@ tr.row-me td:first-child { border-left: 3px solid var(--amarillo-retro); }
   .admin-layout {
     grid-template-columns: 1fr;
     padding: 1rem;
+    gap: 1.5rem;
   }
   .admin-sidebar {
-    position: relative;
-    top: 0;
-    margin-bottom: 1.5rem;
+    position: sticky;
+    top: 60px;
+    z-index: 100;
+    margin-bottom: 0.5rem;
+    padding: 0.8rem;
+    border-radius: 12px;
   }
+  .sidebar-title { display: none !important; }
   .sidebar-menu {
     flex-direction: row;
     overflow-x: auto;
-    padding-bottom: 0.5rem;
+    padding-bottom: 0.3rem;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
   }
   .sidebar-link {
     white-space: nowrap;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     padding: 0.6rem 1rem;
+    flex-shrink: 0;
   }
+  .sidebar-link:hover { transform: none; }
+  
+  /* Admin Grid Helpers */
+  .admin-grid-2 { grid-template-columns: 1fr !important; }
+  .admin-flex-form { flex-direction: column !important; align-items: stretch !important; }
+  .admin-flex-form > * { width: 100% !important; }
+  .admin-flex-form .btn { height: auto !important; padding: 1rem !important; }
+}
+
+/* Global Table Wrap */
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1rem;
+}
+.table-wrap table {
+  min-width: 600px; /* Force scroll on small screens */
 }
 
 /* ─── HERO & HOME REFINEMENTS ────────── */
@@ -1132,9 +1169,19 @@ tr.row-me td:first-child { border-left: 3px solid var(--amarillo-retro); }
 }
 
 @media (max-width: 768px) {
-  .hero-title { font-size: 1.6rem; letter-spacing: 2px; }
-  .hero-subtitle { font-size: 0.95rem; padding: 0 1rem; }
-  .main-content { padding: 0 1rem; }
+  .hero-section { padding: 1.5rem 1rem; margin-bottom: 1.5rem; }
+  .hero-title { font-size: 1.5rem; letter-spacing: 1px; line-height: 1.2; }
+  .hero-subtitle { font-size: 0.9rem; padding: 0; line-height: 1.5; }
+  .main-content { padding: 0 0.8rem; }
+  
+  /* Tables responsiveness */
+  .table-compact { min-width: 600px; }
+  .card-body { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+/* Home Grid specific adjustment */
+@media (max-width: 1024px) {
+  .grid-2 { grid-template-columns: 1fr; }
 }
 
 /* ─── SLOT SELECTION TILES ─────────── */
