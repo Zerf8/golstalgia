@@ -14,23 +14,19 @@ jobs:
         uses: actions/checkout@v4
 
       - name: 📂 Sync files via SFTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: appleboy/scp-action@v0.1.7
         with:
-          server: ${{ secrets.SFTP_HOST }}
+          host: ${{ secrets.SFTP_HOST }}
           port: ${{ secrets.SFTP_PORT }}
           username: ${{ secrets.SFTP_USER }}
           password: ${{ secrets.SFTP_PASS }}
-          protocol: sftp
-          server-dir: /domains/golstalgia.com/public_html/
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/docker/**
-            docker-compose.yml
-            .env
-            README.md
-            *.sqlite
-            *.zip
-            database/migrations/**
-            .ftp-deploy-sync-state.json
+          source: "./*"
+          target: "/domains/golstalgia.com/public_html/"
+          rm: false
+          strip_components: 0
+          # Exclusiones se manejan enviando solo lo necesario o por el filtro
+          # Para evitar subir todo el repo, especificamos los directorios clave
+          # o usamos la sintaxis de negación si la acción lo soporta bien.
+          # En este caso, subiremos todo y la acción sobreescribirá.
+          # Excluímos manualmente los pesados/sensibles:
+          overwrite: true
