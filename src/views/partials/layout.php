@@ -1,3 +1,4 @@
+<?php // Trigger deploy sync: 2026-03-14 21:50 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
