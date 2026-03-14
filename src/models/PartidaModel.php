@@ -144,4 +144,88 @@ class PartidaModel
         $stmt->execute([$ligaId]);
         return $stmt->fetchAll();
     }
+
+    public function getDisponibilidad(int $partidaId, ?int $usuarioId = null): array
+    {
+        if ($usuarioId) {
+            $stmt = $this->db->prepare("SELECT * FROM disponibilidad WHERE partida_id = ? AND usuario_id = ?");
+            $stmt->execute([$partidaId, $usuarioId]);
+        } else {
+            $stmt = $this->db->prepare("SELECT * FROM disponibilidad WHERE partida_id = ?");
+            $stmt->execute([$partidaId]);
+        }
+        return $stmt->fetchAll();
+    }
+
+    public function setDisponibilidad(int $partidaId, int $usuarioId, array $slots): bool
+    {
+        $this->db->beginTransaction();
+        try {
+            // Borrar disponibilidad previa del usuario para esta partida
+            $stmt = $this->db->prepare("DELETE FROM disponibilidad WHERE partida_id = ? AND usuario_id = ?");
+            $stmt->execute([$partidaId, $usuarioId]);
+
+            // Insertar nuevos slots
+            $stmt = $this->db->prepare("INSERT INTO disponibilidad (partida_id, usuario_id, franja_inicio, franja_fin) VALUES (?, ?, ?, ?)");
+            foreach ($slots as $slot) {
+                // Asumimos que $slot es 'YYYY-MM-DD HH:MM:SS'
+                $inicio = $slot;
+                $fin = date('Y-m-d H:i:s', strtotime($slot . ' +30 minutes'));
+                $stmt->execute([$partidaId, $usuarioId, $inicio, $fin]);
+            }
+
+            $this->db->commit();
+            
+            // Comprobar si hay acuerdo
+            $this->checkAgreement($partidaId);
+            
+            return true;
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            return false;
+        }
+    }
+
+    public function checkAgreement(int $partidaId): void
+    {
+        // Buscar franjas donde coincidan ambos jugadores
+        $stmt = $this->db->prepare(
+            "SELECT d1.franja_inicio
+             FROM disponibilidad d1
+             JOIN disponibilidad d2 ON d1.partida_id = d2.partida_id 
+                AND d1.franja_inicio = d2.franja_inicio
+                AND d1.usuario_id != d2.usuario_id
+             JOIN partidas p ON p.id = d1.partida_id
+             WHERE d1.partida_id = ?
+             LIMIT 1"
+        );
+        $stmt->execute([$partidaId]);
+        $match = $stmt->fetch();
+
+        if ($match) {
+            $this->updateEstado($partidaId, 'acordada', $match['franja_inicio']);
+        }
+    }
+
+    public function getOccupiedSlots(string $fecha): array
+    {
+        // Retorna las franjas horarias que ya tienen un partido acordado para un día concreto
+        $stmt = $this->db->prepare(
+            "SELECT DATE_FORMAT(fecha_acordada, '%H:%i:%s') as hora
+             FROM partidas 
+             WHERE DATE(fecha_acordada) = ? AND estado = 'acordada'"
+        );
+        $stmt->execute([$fecha]);
+        return array_column($stmt->fetchAll(), 'hora');
+    }
+
+    public function setFechaAcordada(int $partidaId, string $dateTime): bool
+    {
+        return $this->updateEstado($partidaId, 'acordada', $dateTime);
+    }
+
+    public function cancelarAcuerdo(int $partidaId): bool
+    {
+        return $this->updateEstado($partidaId, 'pendiente', null);
+    }
 }

@@ -2,6 +2,21 @@
 
 class AdminController
 {
+    public function index(): void
+    {
+        Auth::requireAdmin();
+        $db = Database::connect();
+        
+        $stats = [
+            'usuarios'      => $db->query("SELECT COUNT(*) FROM usuarios")->fetchColumn(),
+            'participantes' => $db->query("SELECT COUNT(*) FROM participantes")->fetchColumn(),
+            'ligas'         => $db->query("SELECT COUNT(*) FROM ligas")->fetchColumn(),
+            'partidas_pend' => $db->query("SELECT COUNT(*) FROM partidas WHERE estado = 'pendiente'")->fetchColumn(),
+        ];
+
+        require_once __DIR__ . '/../views/admin/dashboard.php';
+    }
+
     // ─── USUARIOS ─────────────────────────────────────────
     public function usuarios(): void
     {
@@ -320,6 +335,170 @@ class AdminController
         $_SESSION['flash_success'] = 'Resultado guardado.';
         $jornada = (new JornadaModel())->findById($partida['jornada_id']);
         header("Location: /admin/ligas/{$jornada['liga_id']}/jornadas");
+        exit;
+    }
+
+    // ─── HORARIOS ─────────────────────────────────────────
+    public function horarios(): void
+    {
+        Auth::requireAdmin();
+        $ligaActiva = (new LigaModel())->activa();
+        $jornadaId  = isset($_GET['jornada_id']) ? (int)$_GET['jornada_id'] : null;
+        
+        $jornadaModel = new JornadaModel();
+        $jornadas = $ligaActiva ? $jornadaModel->allByLiga($ligaActiva['id']) : [];
+        
+        // Si no hay jornada_id seleccionada, intentar coger la actual o la primera
+        if (!$jornadaId && !empty($jornadas)) {
+             $siguiente = $jornadaModel->findSiguiente($ligaActiva['id']);
+             $jornadaId = $siguiente ? $siguiente['id'] : $jornadas[0]['id'];
+        }
+
+        $jornada = $jornadaId ? $jornadaModel->findById($jornadaId) : null;
+        
+        $model = new HorarioModel();
+        $horarios = $model->all($jornadaId);
+        require_once __DIR__ . '/../views/admin/config_horarios.php';
+    }
+
+    public function horarioStore(): void
+    {
+        Auth::requireAdmin();
+        $this->verifyCsrf();
+        $dia = (int)($_POST['dia_semana'] ?? 1);
+        $hora = trim($_POST['hora_inicio'] ?? '');
+        $jornadaId = !empty($_POST['jornada_id']) ? (int)$_POST['jornada_id'] : null;
+        
+        if (!empty($hora)) {
+            (new HorarioModel())->create($dia, $hora . ':00', $jornadaId);
+        }
+        
+        $qs = $jornadaId ? "?jornada_id={$jornadaId}" : "";
+        header('Location: /admin/horarios' . $qs);
+        exit;
+    }
+
+    public function jornadaUpdateDates(int $id): void
+    {
+        Auth::requireAdmin();
+        $this->verifyCsrf();
+        
+        $model = new JornadaModel();
+        $jornada = $model->findById($id);
+        if (!$jornada) { $this->notFound(); return; }
+
+        $data = [
+            'numero'       => $jornada['numero'],
+            'fecha_inicio' => $_POST['fecha_inicio'] ?? null,
+            'fecha_fin'    => $_POST['fecha_fin'] ?? null,
+            'activa'       => $jornada['activa']
+        ];
+        
+        $model->update($id, $data);
+        
+        $_SESSION['flash_success'] = "Fechas de la Jornada {$jornada['numero']} actualizadas.";
+        header("Location: /admin/horarios?jornada_id={$id}");
+        exit;
+    }
+
+    public function horarioToggle(int $id): void
+    {
+        Auth::requireAdmin();
+        $this->verifyCsrf();
+        $jornadaId = isset($_GET['jornada_id']) ? (int)$_GET['jornada_id'] : null;
+        
+        $model = new HorarioModel();
+        $stmt = Database::connect()->prepare("SELECT * FROM config_horarios WHERE id = ?");
+        $stmt->execute([$id]);
+        $slot = $stmt->fetch();
+
+        if ($slot) {
+            // Si estamos en una jornada y intentamos tocar un tramo GLOBAL (jornada_id is null)
+            // debemos CREAR un shadow de ese tramo para esa jornada en lugar de editar el global.
+            if ($jornadaId && $slot['jornada_id'] === null) {
+                // Crear copia específica con estado invertido
+                $stmt = Database::connect()->prepare(
+                    "INSERT INTO config_horarios (dia_semana, hora_inicio, activo, jornada_id) 
+                     VALUES (?, ?, ?, ?)"
+                );
+                $stmt->execute([
+                    $slot['dia_semana'],
+                    $slot['hora_inicio'],
+                    !$slot['activo'],
+                    $jornadaId
+                ]);
+            } else {
+                // Edición normal (específico o global-en-vista-global)
+                $model->toggle($id);
+            }
+        }
+        
+        $qs = $jornadaId ? "?jornada_id={$jornadaId}" : "";
+        header('Location: /admin/horarios' . $qs);
+        exit;
+    }
+
+    public function horariosUpdateBatch(): void
+    {
+        Auth::requireAdmin();
+        $this->verifyCsrf();
+        
+        $jornadaId = !empty($_POST['jornada_id']) ? (int)$_POST['jornada_id'] : null;
+        $activeSlots = $_POST['slots'] ?? []; // Array of slot IDs that should be active
+        
+        $model = new HorarioModel();
+        $db = Database::connect();
+        
+        // Obtenemos todos los slots actuales (mergelist si hay jornadaId)
+        $allSlots = $model->all($jornadaId);
+        
+        foreach ($allSlots as $slot) {
+            $isActiveInInput = in_array($slot['id'], $activeSlots);
+            
+            if ($jornadaId) {
+                // VISTA JORNADA
+                if ($slot['is_specific']) {
+                    // Si ya es específico (añadido a mano o es un shadow de desactivación)
+                    if (!$isActiveInInput) {
+                        // Borrar si se desmarca
+                        $db->prepare("DELETE FROM config_horarios WHERE id = ?")->execute([$slot['id']]);
+                    } elseif ($slot['activo'] == 0) {
+                        // Si era un shadow de desactivación y se ha MARCADO -> Lo borramos para que vuelva a verse el global
+                        $db->prepare("DELETE FROM config_horarios WHERE id = ?")->execute([$slot['id']]);
+                    }
+                } else {
+                    // Es un tramo GLOBAL
+                    if (!$isActiveInInput) {
+                        // Si se desmarca -> Crear shadow de desactivación
+                        $stmt = $db->prepare("SELECT id FROM config_horarios WHERE dia_semana = ? AND hora_inicio = ? AND jornada_id = ?");
+                        $stmt->execute([$slot['dia_semana'], $slot['hora_inicio'], $jornadaId]);
+                        if (!$stmt->fetch()) {
+                            $db->prepare("INSERT INTO config_horarios (jornada_id, dia_semana, hora_inicio, activo) VALUES (?, ?, ?, 0)")
+                               ->execute([$jornadaId, $slot['dia_semana'], $slot['hora_inicio']]);
+                        }
+                    }
+                }
+            } else {
+                // VISTA GLOBAL
+                if (!$isActiveInInput) {
+                    $db->prepare("DELETE FROM config_horarios WHERE id = ?")->execute([$slot['id']]);
+                }
+            }
+        }
+        
+        $qs = $jornadaId ? "?jornada_id={$jornadaId}" : "";
+        header('Location: /admin/horarios' . $qs);
+        exit;
+    }
+
+    public function horarioDelete(int $id): void
+    {
+        Auth::requireAdmin();
+        $this->verifyCsrf();
+        $jornadaId = isset($_GET['jornada_id']) ? (int)$_GET['jornada_id'] : null;
+        (new HorarioModel())->delete($id);
+        $qs = $jornadaId ? "?jornada_id={$jornadaId}" : "";
+        header('Location: /admin/horarios' . $qs);
         exit;
     }
 

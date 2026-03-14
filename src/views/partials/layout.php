@@ -29,8 +29,8 @@
       <a href="/" class="nav-link <?= $_SERVER['REQUEST_URI'] === '/' ? 'active' : '' ?>">Inicio</a>
       <a href="/calendario" class="nav-link <?= $_SERVER['REQUEST_URI'] === '/calendario' ? 'active' : '' ?>">Calendario</a>
       <a href="/reglas" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/reglas') ? 'active' : '' ?>">Reglas</a>
-      <a href="https://www.ivoox.com/podcast-golstalgia_sq_f1287524_1.html" class="nav-link" target="_blank" rel="noopener">🎙️ Podcast</a>
-      <a href="https://www.patreon.com/cw/golstalgia_" class="nav-link" target="_blank" rel="noopener">🧡 Patreon</a>
+      <a href="https://www.ivoox.com/podcast-golstalgia_sq_f1287524_1.html" class="nav-link" target="_blank" rel="noopener">Podcast 🎙️</a>
+      <a href="https://www.patreon.com/cw/golstalgia_" class="nav-link" target="_blank" rel="noopener">Patreon 🧡</a>
       
       <?php if (Auth::check()): ?>
         <a href="/dashboard" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/dashboard') ? 'active' : '' ?>">Mi Liga</a>
@@ -52,7 +52,45 @@
     </nav>
 
     <div class="header-user">
-      <?php if (Auth::check()): ?>
+      <?php if (Auth::check()): 
+          $notifModel = new NotificationModel();
+          $unreadCount = $notifModel->getUnreadCount(Auth::user()['id']);
+          $recentNotifs = $notifModel->getByUser(Auth::user()['id'], 5);
+      ?>
+        <!-- Notificaciones -->
+        <div class="notifications-wrapper" id="notif-wrapper">
+          <button class="notif-btn" id="notif-btn" title="Notificaciones">
+            <span class="bell-icon">🔔</span>
+            <?php if ($unreadCount > 0): ?>
+              <span class="notif-badge"><?= $unreadCount ?></span>
+            <?php endif; ?>
+          </button>
+          
+          <div class="notif-dropdown" id="notif-dropdown">
+            <div class="notif-header">
+              <span>Notificaciones</span>
+              <?php if ($unreadCount > 0): ?>
+                <button id="mark-all-read" class="btn-text">Marcar todas como leídas</button>
+              <?php endif; ?>
+            </div>
+            <div class="notif-body">
+              <?php if (empty($recentNotifs)): ?>
+                <p class="notif-empty">No tienes notificaciones</p>
+              <?php else: ?>
+                <?php foreach ($recentNotifs as $n): ?>
+                  <div class="notif-item <?= $n['leida'] ? '' : 'is-unread' ?>" data-id="<?= $n['id'] ?>">
+                    <div class="notif-type notif-type-<?= $n['tipo'] ?>"></div>
+                    <div class="notif-content">
+                      <p><?= htmlspecialchars($n['mensaje']) ?></p>
+                      <small><?= date('d/m H:i', strtotime($n['created_at'])) ?></small>
+                    </div>
+                  </div>
+                <?php endforeach; ?>
+              <?php endif; ?>
+            </div>
+          </div>
+        </div>
+
         <span class="user-name"><?= htmlspecialchars(Auth::user()['nombre']) ?></span>
         <?php if (Auth::isAdmin()): ?>
           <span class="badge-admin">ADMIN</span>

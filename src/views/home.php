@@ -5,9 +5,9 @@ $pageTitle = "Golstalgia – La Liga Trivial de Fútbol Retro";
 
 <div class="public-home-content">
   
-  <section class="hero-section" style="text-align: center; margin-bottom: 1rem; padding: 0.2rem 0 0.75rem; border-bottom: 2px solid var(--glass-border);">
-    <h1 style="font-family: var(--font-display); font-size: 1.8rem; color: var(--amarillo-retro); text-shadow: 2px 2px 0 #000; letter-spacing: 2px; margin-bottom: 0.1rem;">BIENVENIDO A LA ÉLITE</h1>
-    <p style="font-size: 0.95rem; opacity: 0.8; max-width: 500px; margin: 0 auto;">¿Cuánto sabes realmente de fútbol? Demuéstralo en la liga de trivial más exclusiva para verdaderos <strong>Golstálgicos</strong>.</p>
+  <section class="hero-section">
+    <h1 class="hero-title">BIENVENIDO A LA ÉLITE</h1>
+    <p class="hero-subtitle">¿Cuánto sabes realmente de fútbol? Demuéstralo en la liga de trivial más exclusiva para verdaderos <strong>Golstálgicos</strong>.</p>
   </section>
 
   <div class="grid-2">

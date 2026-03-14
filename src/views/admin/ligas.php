@@ -7,9 +7,9 @@ ob_start();
 
   <?php require_once __DIR__ . '/partials/sidebar.php'; ?>
 
-  <div>
+  <div class="admin-main">
     <div class="top-bar">
-      <h1 class="page-title" style="margin:0;"><span>🏆</span> Ligas</h1>
+      <h1 class="page-title"><span>🏆</span> Ligas</h1>
       <a href="/admin/ligas/crear" class="btn btn-primary">+ Nueva liga</a>
     </div>
 

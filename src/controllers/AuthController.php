@@ -151,7 +151,7 @@ class AuthController
     public function logout(): void
     {
         Auth::logout();
-        header('Location: /auth/login');
+        header('Location: /');
         exit;
     }
 

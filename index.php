@@ -22,6 +22,7 @@ $router->get('/calendario', [HomeController::class, 'calendario']);
 $router->get('/dashboard', [DashboardController::class, 'index']);
 
 // ─── Admin — Usuarios ─────────────────────────────────
+$router->get( '/admin',                           [AdminController::class, 'index']);
 $router->get( '/admin/usuarios',                  [AdminController::class, 'usuarios']);
 $router->get( '/admin/usuarios/crear',            [AdminController::class, 'usuarioCreate']);
 $router->post('/admin/usuarios/guardar',          [AdminController::class, 'usuarioStore']);
@@ -48,10 +49,24 @@ $router->post('/admin/ligas/:id/actualizar',      [AdminController::class, 'liga
 $router->get( '/admin/ligas/:ligaId/jornadas',         [AdminController::class, 'jornadas']);
 $router->get( '/admin/ligas/:ligaId/jornadas/crear',   [AdminController::class, 'jornadaCreate']);
 $router->post('/admin/ligas/:ligaId/jornadas/guardar', [AdminController::class, 'jornadaStore']);
+$router->post('/admin/jornadas/:id/fechas',            [AdminController::class, 'jornadaUpdateDates']);
 
 // ─── Admin — Resultados ───────────────────────────────
 $router->get( '/admin/partidas/:id/resultado',         [AdminController::class, 'resultadoForm']);
 $router->post('/admin/partidas/:id/resultado/guardar', [AdminController::class, 'resultadoStore']);
+
+// ─── Admin — Horarios ─────────────────────────────────
+$router->get( '/admin/horarios',                       [AdminController::class, 'horarios']);
+$router->post('/admin/horarios/guardar',               [AdminController::class, 'horarioStore']);
+$router->post('/admin/horarios/batch',             [AdminController::class, 'horariosUpdateBatch']);
+$router->post('/admin/horarios/:id/toggle',            [AdminController::class, 'horarioToggle']);
+$router->post('/admin/horarios/:id/eliminar',          [AdminController::class, 'horarioDelete']);
+
+// ─── Participante — Disponibilidad ────────────────────
+$router->post('/dashboard/disponibilidad/:partidaId',  [DashboardController::class, 'setDisponibilidad']);
+$router->get('/dashboard/aceptar/:partidaId', [DashboardController::class, 'aceptarDisponibilidad']);
+$router->get('/dashboard/cancelar-acuerdo/:partidaId', [DashboardController::class, 'cancelarAcuerdo']);
+$router->post('/dashboard/notificaciones/leidas',      [DashboardController::class, 'markNotificationsRead']);
 
 // ─── Dispatch ─────────────────────────────────────────
 $router->dispatch();

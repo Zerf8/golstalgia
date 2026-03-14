@@ -8,10 +8,9 @@ ob_start();
   <!-- Sidebar -->
   <?php require_once __DIR__ . '/partials/sidebar.php'; ?>
 
-  <!-- Content -->
-  <div>
+  <div class="admin-main">
     <div class="top-bar">
-      <h1 class="page-title" style="margin:0;"><span>🏃</span> Participantes</h1>
+      <h1 class="page-title"><span>🏃</span> Participantes</h1>
       <a href="/admin/participantes/crear" class="btn btn-primary">+ Nuevo participante</a>
     </div>
 

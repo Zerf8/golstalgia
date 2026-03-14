@@ -4,7 +4,7 @@ $pageTitle = "Calendario Oficial – Golstalgia";
 ?>
 
 <div class="calendar-page">
-    <h1 style="font-family: var(--font-display); font-size: 4rem; text-align: center; color: var(--amarillo-retro); margin-bottom: 3rem; text-shadow: 4px 4px 0 #000;">📅 CALENDARIO DE LA LIGA</h1>
+    <h1 class="hero-title" style="margin-top: 2rem;">📅 CALENDARIO DE LA LIGA</h1>
 
     <div class="grid-2">
         <?php foreach ($jornadasCompletas as $item): ?>
@@ -35,10 +35,10 @@ $pageTitle = "Calendario Oficial – Golstalgia";
                             <p style="text-align: center; opacity: 0.5; padding: 1rem;">Partidos por asignar.</p>
                         <?php else: ?>
                             <?php foreach ($partidas as $p): ?>
-                                <div class="match-row" style="padding: 0.75rem;">
-                                    <div class="match-team" style="font-size: 0.95rem;"><?= htmlspecialchars($p['nombre_local']) ?></div>
+                                <div class="match-row">
+                                    <div class="match-team"><?= htmlspecialchars($p['nombre_local']) ?></div>
                                     <?php if ($p['estado'] === 'jugada'): ?>
-                                        <div class="match-score" style="font-size: 1rem; width: 60px;"><?= $p['puntos_local'] ?> - <?= $p['puntos_visitante'] ?></div>
+                                        <div class="match-score"><?= $p['puntos_local'] ?> - <?= $p['puntos_visitante'] ?></div>
                                     <?php else: ?>
                                         <div class="match-schedule">
                                             <?php if (!empty($p['fecha_acordada'])): ?>
@@ -53,7 +53,7 @@ $pageTitle = "Calendario Oficial – Golstalgia";
                                             <?php endif; ?>
                                         </div>
                                     <?php endif; ?>
-                                    <div class="match-team right" style="font-size: 0.95rem;"><?= htmlspecialchars($p['nombre_visitante']) ?></div>
+                                    <div class="match-team right"><?= htmlspecialchars($p['nombre_visitante']) ?></div>
                                 </div>
                             <?php endforeach; ?>
                         <?php endif; ?>
