@@ -143,7 +143,7 @@
 
 <footer class="site-footer">
   <p>Golstalgia Liga Trivial &copy; <?= date('Y') ?> &mdash; by Josep y Sagra</p>
-  <p style="font-size: 0.7rem; opacity: 0.6; margin-top: 5px;">Sitio Web creado por Zerf 2026</p>
+  <p style="font-size: 0.7rem; opacity: 0.6; margin-top: 5px;">Sitio Web creado por Zerf v. 1.01 2026</p>
 </footer>
 
 <?php
