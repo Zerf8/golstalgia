@@ -199,13 +199,13 @@ class PartidaModel
         
         // Insertar estadísticas
         $stmtInsert = $this->db->prepare(
-            "INSERT INTO clasificacion (liga_id, usuario_id, partidas_jugadas, victorias, derrotas, puntos_favor, puntos_contra, puntos_clasificacion)
+            "INSERT INTO clasificacion (liga_id, participante_id, partidas_jugadas, victorias, derrotas, puntos_favor, puntos_contra, puntos_clasificacion)
              VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
         );
         
-        foreach ($stats as $userId => $s) {
+        foreach ($stats as $partId => $s) {
             $stmtInsert->execute([
-                $ligaId, $userId, $s['jugadas'], $s['victorias'], $s['derrotas'], 
+                $ligaId, $partId, $s['jugadas'], $s['victorias'], $s['derrotas'], 
                 $s['favor'], $s['contra'], $s['puntos']
             ]);
         }
@@ -216,7 +216,7 @@ class PartidaModel
         $stmt = $this->db->prepare(
             "SELECT c.*, p.nombre
              FROM clasificacion c
-             JOIN participantes p ON p.id = c.usuario_id
+             JOIN participantes p ON p.id = c.participante_id
              WHERE c.liga_id = ?
              ORDER BY c.puntos_clasificacion DESC, (CAST(c.puntos_favor AS SIGNED) - CAST(c.puntos_contra AS SIGNED)) DESC, c.puntos_favor DESC"
         );
