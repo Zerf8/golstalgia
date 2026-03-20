@@ -358,10 +358,21 @@ class AdminController
     public function partidas(): void
     {
         Auth::requireAdmin();
-        $ligaId = isset($_GET['liga_id']) ? (int)$_GET['liga_id'] : null;
-        $model = new PartidaModel();
-        $partidas = $model->all($ligaId);
-        $ligas = (new LigaModel())->all();
+        $ligaId         = isset($_GET['liga_id']) ? (int)$_GET['liga_id'] : null;
+        $jornadaId      = isset($_GET['jornada_id']) ? (int)$_GET['jornada_id'] : null;
+        $participanteId = isset($_GET['participante_id']) ? (int)$_GET['participante_id'] : null;
+
+        $model    = new PartidaModel();
+        $partidas = $model->all($ligaId, $jornadaId, $participanteId);
+        
+        $ligas        = (new LigaModel())->all();
+        $participantes = (new ParticipanteModel())->all();
+        
+        $jornadas = [];
+        if ($ligaId) {
+            $jornadas = (new JornadaModel())->allByLiga($ligaId);
+        }
+
         require_once __DIR__ . '/../views/admin/partidas.php';
     }
 
@@ -398,7 +409,10 @@ class AdminController
         if ($estado === 'jugada') {
             $ptsLocal = (int)($_POST['puntos_local'] ?? 0);
             $ptsVisit = (int)($_POST['puntos_visitante'] ?? 0);
-            $ganadorId = $ptsLocal > $ptsVisit ? $partida['local_id'] : ($ptsVisit > $ptsLocal ? $partida['visitante_id'] : null);
+            // Determinar ganador basado en puntos (o nul si empate)
+            $ganadorId = null;
+            if ($ptsLocal > $ptsVisit) $ganadorId = $partida['local_id'];
+            elseif ($ptsVisit > $ptsLocal) $ganadorId = $partida['visitante_id'];
 
             $model->saveResultado($id, [
                 'puntos_local'     => $ptsLocal,
@@ -407,10 +421,12 @@ class AdminController
                 'registrado_por'   => Auth::user()['id'],
             ]);
         } else {
-            // Si no está jugada, borrar resultado si existía (opcional, pero limpio)
-            Database::connect()->prepare("DELETE FROM resultados WHERE partida_id = ?")->execute([$id]);
-            // Rebuild classification for the league to be safe
-            $model->rebuildClasificacion((int)$partida['liga_id']);
+            // Si el estado ya no es 'jugada', nos aseguramos de borrar el resultado si existía
+            // y reconstruir la clasificación de la liga
+            $db = Database::connect();
+            $stmt = $db->prepare("DELETE FROM resultados WHERE partida_id = ?");
+            $stmt->execute([$id]);
+            $model->rebuildClasificacion($partida['liga_id']);
         }
 
         $_SESSION['flash_success'] = 'Partido actualizado correctamente.';

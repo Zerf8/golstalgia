@@ -9,10 +9,26 @@ class PartidaModel
         $this->db = Database::connect();
     }
 
-    public function all(?int $ligaId = null): array
+    public function all(?int $ligaId = null, ?int $jornadaId = null, ?int $participanteId = null): array
     {
-        $where = $ligaId ? "WHERE j.liga_id = ?" : "";
-        $params = $ligaId ? [$ligaId] : [];
+        $whereItems = [];
+        $params = [];
+
+        if ($ligaId) {
+            $whereItems[] = "j.liga_id = ?";
+            $params[] = $ligaId;
+        }
+        if ($jornadaId) {
+            $whereItems[] = "p.jornada_id = ?";
+            $params[] = $jornadaId;
+        }
+        if ($participanteId) {
+            $whereItems[] = "(p.local_id = ? OR p.visitante_id = ?)";
+            $params[] = $participanteId;
+            $params[] = $participanteId;
+        }
+
+        $where = !empty($whereItems) ? "WHERE " . implode(" AND ", $whereItems) : "";
         
         $stmt = $this->db->prepare(
             "SELECT p.*,
@@ -29,7 +45,7 @@ class PartidaModel
              JOIN participantes uv ON uv.id = p.visitante_id
              LEFT JOIN resultados r ON r.partida_id = p.id
              $where
-             ORDER BY l.id DESC, j.numero DESC, p.id DESC"
+             ORDER BY l.id ASC, j.numero ASC, p.id ASC"
         );
         $stmt->execute($params);
         return $stmt->fetchAll();

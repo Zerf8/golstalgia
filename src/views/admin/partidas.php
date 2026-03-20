@@ -11,15 +11,37 @@ ob_start();
     <div class="top-bar">
       <h1 class="page-title" style="margin:0;"><span>⚽</span> Gestión de Partidos</h1>
       
-      <form method="GET" action="/admin/partidas" style="display:flex; gap:0.5rem; align-items:center;">
-        <select name="liga_id" class="form-control" onchange="this.form.submit()" style="width:auto; padding:0.25rem 2rem 0.25rem 0.75rem;">
+      <form method="GET" action="/admin/partidas" style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+        <select name="liga_id" class="form-control" onchange="this.form.submit()" style="width:auto;">
           <option value="">Todas las ligas</option>
           <?php foreach ($ligas as $l): ?>
             <option value="<?= $l['id'] ?>" <?= $ligaId == $l['id'] ? 'selected' : '' ?>>
-              <?= htmlspecialchars($l['nombre']) ?> (T<?= $l['temporada'] ?>)
+              <?= htmlspecialchars($l['nombre']) ?>
             </option>
           <?php endforeach; ?>
         </select>
+
+        <?php if ($ligaId): ?>
+        <select name="jornada_id" class="form-control" onchange="this.form.submit()" style="width:auto;">
+          <option value="">Todas las jornadas</option>
+          <?php foreach ($jornadas as $j): ?>
+            <option value="<?= $j['id'] ?>" <?= $jornadaId == $j['id'] ? 'selected' : '' ?>>
+              Jornada <?= $j['numero'] ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+        <?php endif; ?>
+
+        <select name="participante_id" class="form-control" onchange="this.form.submit()" style="width:auto;">
+          <option value="">Todos los jugadores</option>
+          <?php foreach ($participantes as $part): ?>
+            <option value="<?= $part['id'] ?>" <?= $participanteId == $part['id'] ? 'selected' : '' ?>>
+              <?= htmlspecialchars($part['nombre']) ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+
+        <a href="/admin/partidas" class="btn btn-dark" title="Limpiar filtros">🧹</a>
       </form>
     </div>
 
