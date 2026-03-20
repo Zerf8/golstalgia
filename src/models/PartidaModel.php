@@ -9,6 +9,32 @@ class PartidaModel
         $this->db = Database::connect();
     }
 
+    public function all(?int $ligaId = null): array
+    {
+        $where = $ligaId ? "WHERE j.liga_id = ?" : "";
+        $params = $ligaId ? [$ligaId] : [];
+        
+        $stmt = $this->db->prepare(
+            "SELECT p.*,
+                    ul.nombre AS nombre_local,
+                    uv.nombre AS nombre_visitante,
+                    r.puntos_local, r.puntos_visitante, r.ganador_id,
+                    j.numero AS jornada_numero,
+                    l.nombre AS liga_nombre,
+                    l.id AS liga_id
+             FROM partidas p
+             JOIN jornadas j ON j.id = p.jornada_id
+             JOIN ligas l ON l.id = j.liga_id
+             JOIN participantes ul ON ul.id = p.local_id
+             JOIN participantes uv ON uv.id = p.visitante_id
+             LEFT JOIN resultados r ON r.partida_id = p.id
+             $where
+             ORDER BY l.id DESC, j.numero DESC, p.id DESC"
+        );
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
+
     public function allByJornada(int $jornadaId): array
     {
         $stmt = $this->db->prepare(
@@ -32,10 +58,14 @@ class PartidaModel
         $stmt = $this->db->prepare(
             "SELECT p.*,
                     ul.nombre AS nombre_local,
-                    uv.nombre AS nombre_visitante
+                    uv.nombre AS nombre_visitante,
+                    j.liga_id,
+                    r.puntos_local, r.puntos_visitante
              FROM partidas p
              JOIN participantes ul ON ul.id = p.local_id
              JOIN participantes uv ON uv.id = p.visitante_id
+             JOIN jornadas j ON j.id = p.jornada_id
+             LEFT JOIN resultados r ON r.partida_id = p.id
              WHERE p.id = ?"
         );
         $stmt->execute([$id]);
@@ -54,6 +84,16 @@ class PartidaModel
             $data['estado'] ?? 'pendiente',
         ]);
         return (int) $this->db->lastInsertId();
+    }
+
+    public function update(int $id, array $data): bool
+    {
+        $stmt = $this->db->prepare("UPDATE partidas SET estado=?, fecha_acordada=? WHERE id=?");
+        return $stmt->execute([
+            $data['estado'],
+            $data['fecha_acordada'],
+            $id
+        ]);
     }
 
     public function updateEstado(int $id, string $estado, ?string $fechaAcordada = null): bool
@@ -84,51 +124,74 @@ class PartidaModel
 
         if ($ok) {
             $this->updateEstado($partidaId, 'jugada');
-            $this->recalcularClasificacion($partidaId);
+            
+            // Get liga_id to rebuild classification
+            $stmt = $this->db->prepare("SELECT j.liga_id FROM partidas p JOIN jornadas j ON j.id = p.jornada_id WHERE p.id = ?");
+            $stmt->execute([$partidaId]);
+            $ligaId = $stmt->fetchColumn();
+            $this->rebuildClasificacion((int)$ligaId);
         }
 
         return $ok;
     }
 
-    private function recalcularClasificacion(int $partidaId): void
+    public function rebuildClasificacion(int $ligaId): void
     {
-        // Get partida and result
+        // Limpiar clasificación actual de la liga
+        $this->db->prepare("DELETE FROM clasificacion WHERE liga_id = ?")->execute([$ligaId]);
+        
+        // Obtener todos los resultados de la liga
         $stmt = $this->db->prepare(
-            "SELECT p.jornada_id, p.local_id, p.visitante_id, j.liga_id,
-                    r.puntos_local, r.puntos_visitante, r.ganador_id
+            "SELECT p.local_id, p.visitante_id, r.puntos_local, r.puntos_visitante, r.ganador_id
              FROM partidas p
-             JOIN jornadas j ON j.id = p.jornada_id
              JOIN resultados r ON r.partida_id = p.id
-             WHERE p.id = ?"
+             JOIN jornadas j ON j.id = p.jornada_id
+             WHERE j.liga_id = ? AND p.estado = 'jugada'"
         );
-        $stmt->execute([$partidaId]);
-        $row = $stmt->fetch();
-        if (!$row) return;
-
-        $ligaId = $row['liga_id'];
-
-        foreach (['local_id', 'visitante_id'] as $side) {
-            $userId = $row[$side];
-            $esLocal = $side === 'local_id';
-            $puntosFavor  = $esLocal ? $row['puntos_local']    : $row['puntos_visitante'];
-            $puntosContra = $esLocal ? $row['puntos_visitante'] : $row['puntos_local'];
-            $victoria     = ($row['ganador_id'] == $userId) ? 1 : 0;
-            $derrota      = ($row['ganador_id'] != $userId && $row['ganador_id'] !== null) ? 1 : 0;
-            $empate       = ($row['ganador_id'] === null) ? 1 : 0;
-            $pts          = ($victoria * 3) + ($empate * 1);
-
-            $stmt2 = $this->db->prepare(
-                "INSERT INTO clasificacion (liga_id, participante_id, partidas_jugadas, victorias, derrotas, puntos_favor, puntos_contra, puntos_clasificacion)
-                 VALUES (?,?,1,?,?,?,?,?)
-                 ON DUPLICATE KEY UPDATE
-                   partidas_jugadas = partidas_jugadas + 1,
-                   victorias = victorias + VALUES(victorias),
-                   derrotas = derrotas + VALUES(derrotas),
-                   puntos_favor = puntos_favor + VALUES(puntos_favor),
-                   puntos_contra = puntos_contra + VALUES(puntos_contra),
-                   puntos_clasificacion = puntos_clasificacion + VALUES(puntos_clasificacion)"
-            );
-            $stmt2->execute([$ligaId, $userId, $victoria, $derrota, $puntosFavor, $puntosContra, $pts]);
+        $stmt->execute([$ligaId]);
+        $partidas = $stmt->fetchAll();
+        
+        $stats = [];
+        
+        foreach ($partidas as $p) {
+            foreach (['local', 'visitante'] as $side) {
+                $id = ($side === 'local') ? $p['local_id'] : $p['visitante_id'];
+                if (!isset($stats[$id])) {
+                    $stats[$id] = [
+                        'jugadas' => 0, 'victorias' => 0, 'derrotas' => 0, 
+                        'favor' => 0, 'contra' => 0, 'puntos' => 0
+                    ];
+                }
+                
+                $stats[$id]['jugadas']++;
+                $p_favor  = ($side === 'local') ? $p['puntos_local'] : $p['puntos_visitante'];
+                $p_contra = ($side === 'local') ? $p['puntos_visitante'] : $p['puntos_local'];
+                $stats[$id]['favor']  += $p_favor;
+                $stats[$id]['contra'] += $p_contra;
+                
+                if ($p['ganador_id'] == $id) {
+                    $stats[$id]['victorias']++;
+                    $stats[$id]['puntos'] += 3;
+                } elseif ($p['ganador_id'] !== null) {
+                    $stats[$id]['derrotas']++;
+                } else {
+                    // Empate
+                    $stats[$id]['puntos'] += 1;
+                }
+            }
+        }
+        
+        // Insertar estadísticas
+        $stmtInsert = $this->db->prepare(
+            "INSERT INTO clasificacion (liga_id, usuario_id, partidas_jugadas, victorias, derrotas, puntos_favor, puntos_contra, puntos_clasificacion)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+        );
+        
+        foreach ($stats as $userId => $s) {
+            $stmtInsert->execute([
+                $ligaId, $userId, $s['jugadas'], $s['victorias'], $s['derrotas'], 
+                $s['favor'], $s['contra'], $s['puntos']
+            ]);
         }
     }
 
@@ -137,9 +200,9 @@ class PartidaModel
         $stmt = $this->db->prepare(
             "SELECT c.*, p.nombre
              FROM clasificacion c
-             JOIN participantes p ON p.id = c.participante_id
+             JOIN participantes p ON p.id = c.usuario_id
              WHERE c.liga_id = ?
-             ORDER BY c.puntos_clasificacion DESC, c.puntos_favor DESC, (CAST(c.puntos_favor AS SIGNED) - CAST(c.puntos_contra AS SIGNED)) DESC"
+             ORDER BY c.puntos_clasificacion DESC, (CAST(c.puntos_favor AS SIGNED) - CAST(c.puntos_contra AS SIGNED)) DESC, c.puntos_favor DESC"
         );
         $stmt->execute([$ligaId]);
         return $stmt->fetchAll();

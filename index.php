@@ -51,6 +51,11 @@ $router->get( '/admin/ligas/:ligaId/jornadas/crear',   [AdminController::class, 
 $router->post('/admin/ligas/:ligaId/jornadas/guardar', [AdminController::class, 'jornadaStore']);
 $router->post('/admin/jornadas/:id/fechas',            [AdminController::class, 'jornadaUpdateDates']);
 
+// ─── Admin — Partidas ─────────────────────────────────
+$router->get( '/admin/partidas',                       [AdminController::class, 'partidas']);
+$router->get( '/admin/partidas/:id/editar',            [AdminController::class, 'partidaEdit']);
+$router->post('/admin/partidas/:id/actualizar',        [AdminController::class, 'partidaUpdate']);
+
 // ─── Admin — Resultados ───────────────────────────────
 $router->get( '/admin/partidas/:id/resultado',         [AdminController::class, 'resultadoForm']);
 $router->post('/admin/partidas/:id/resultado/guardar', [AdminController::class, 'resultadoStore']);

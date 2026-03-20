@@ -355,6 +355,69 @@ class AdminController
         exit;
     }
 
+    public function partidas(): void
+    {
+        Auth::requireAdmin();
+        $ligaId = isset($_GET['liga_id']) ? (int)$_GET['liga_id'] : null;
+        $model = new PartidaModel();
+        $partidas = $model->all($ligaId);
+        $ligas = (new LigaModel())->all();
+        require_once __DIR__ . '/../views/admin/partidas.php';
+    }
+
+    public function partidaEdit(int $id): void
+    {
+        Auth::requireAdmin();
+        $model = new PartidaModel();
+        $partida = $model->findById($id);
+        if (!$partida) { $this->notFound(); return; }
+        require_once __DIR__ . '/../views/admin/partida_form.php';
+    }
+
+    public function partidaUpdate(int $id): void
+    {
+        Auth::requireAdmin();
+        $this->verifyCsrf();
+
+        $model = new PartidaModel();
+        $partida = $model->findById($id);
+        if (!$partida) { $this->notFound(); return; }
+
+        $estado = $_POST['estado'] ?? 'pendiente';
+        $fecha  = $_POST['fecha'] ?? null;
+        $hora   = $_POST['hora'] ?? null;
+        $fechaAcordada = ($fecha && $hora) ? "$fecha $hora" : null;
+
+        // Actualizar datos básicos del partido
+        $model->update($id, [
+            'estado'         => $estado,
+            'fecha_acordada' => $fechaAcordada
+        ]);
+
+        // Si el estado es 'jugada', guardar/actualizar resultado
+        if ($estado === 'jugada') {
+            $ptsLocal = (int)($_POST['puntos_local'] ?? 0);
+            $ptsVisit = (int)($_POST['puntos_visitante'] ?? 0);
+            $ganadorId = $ptsLocal > $ptsVisit ? $partida['local_id'] : ($ptsVisit > $ptsLocal ? $partida['visitante_id'] : null);
+
+            $model->saveResultado($id, [
+                'puntos_local'     => $ptsLocal,
+                'puntos_visitante' => $ptsVisit,
+                'ganador_id'       => $ganadorId,
+                'registrado_por'   => Auth::user()['id'],
+            ]);
+        } else {
+            // Si no está jugada, borrar resultado si existía (opcional, pero limpio)
+            Database::connect()->prepare("DELETE FROM resultados WHERE partida_id = ?")->execute([$id]);
+            // Rebuild classification for the league to be safe
+            $model->rebuildClasificacion((int)$partida['liga_id']);
+        }
+
+        $_SESSION['flash_success'] = 'Partido actualizado correctamente.';
+        header('Location: /admin/partidas');
+        exit;
+    }
+
     // ─── HORARIOS ─────────────────────────────────────────
     public function horarios(): void
     {
