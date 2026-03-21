@@ -10,7 +10,7 @@ ob_start();
   <div class="admin-main">
     <div class="top-bar">
       <h1 class="page-title"><span>🏆</span> Ligas</h1>
-      <a href="/admin/ligas/crear" class="btn btn-primary">+ Nueva liga</a>
+      <a href="/trivial/admin/ligas/crear" class="btn btn-primary">+ Nueva liga</a>
     </div>
 
     <?php if (empty($ligas)): ?>
@@ -18,7 +18,7 @@ ob_start();
         <div class="card-body">
           <p style="color:#888; text-align:center; padding:2rem 0;">
             No hay ligas creadas aún.<br>
-            <a href="/admin/ligas/crear" class="btn btn-primary" style="margin-top:1rem;">Crear la primera liga</a>
+            <a href="/trivial/admin/ligas/crear" class="btn btn-primary" style="margin-top:1rem;">Crear la primera liga</a>
           </p>
         </div>
       </div>
@@ -34,8 +34,8 @@ ob_start();
             <?php else: ?>
               <span class="badge badge-gris">Inactiva</span>
             <?php endif; ?>
-            <a href="/admin/ligas/<?= $liga['id'] ?>/editar" class="btn btn-sm btn-dark">Editar</a>
-            <a href="/admin/ligas/<?= $liga['id'] ?>/jornadas" class="btn btn-sm btn-verde">Jornadas</a>
+            <a href="/trivial/admin/ligas/<?= $liga['id'] ?>/editar" class="btn btn-sm btn-dark">Editar</a>
+            <a href="/trivial/admin/ligas/<?= $liga['id'] ?>/jornadas" class="btn btn-sm btn-verde">Jornadas</a>
           </div>
         </div>
         <div class="card-body">
@@ -69,5 +69,5 @@ ob_start();
 <?php
 $content = ob_get_clean();
 $pageTitle = 'Ligas — Admin';
-require_once __DIR__ . '/../partials/layout.php';
+require_once __DIR__ . '/../../partials/layout.php';
 ?>

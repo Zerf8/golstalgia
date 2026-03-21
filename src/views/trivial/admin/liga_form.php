@@ -14,7 +14,7 @@ ob_start();
         <span><?= $isEdit ? '✏️' : '➕' ?></span>
         <?= $isEdit ? 'Editar liga' : 'Nueva liga' ?>
       </h1>
-      <a href="/admin/ligas" class="btn btn-dark">← Volver</a>
+      <a href="/trivial/admin/ligas" class="btn btn-dark">← Volver</a>
     </div>
 
     <div class="card" style="margin-bottom:1.5rem;">
@@ -93,7 +93,7 @@ ob_start();
             <button type="submit" class="btn btn-primary">
               <?= $isEdit ? '💾 Guardar cambios' : '➕ Crear liga' ?>
             </button>
-            <a href="/admin/ligas" class="btn btn-dark">Cancelar</a>
+            <a href="/trivial/admin/ligas" class="btn btn-dark">Cancelar</a>
           </div>
         </form>
       </div>
@@ -121,5 +121,5 @@ ob_start();
 <?php
 $content = ob_get_clean();
 $pageTitle = ($isEdit ? 'Editar' : 'Nueva') . ' liga — Admin';
-require_once __DIR__ . '/../partials/layout.php';
+require_once __DIR__ . '/../../partials/layout.php';
 ?>

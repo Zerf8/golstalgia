@@ -98,7 +98,7 @@ class DashboardController
             }
         }
 
-        require_once __DIR__ . '/../views/dashboard.php';
+        require_once __DIR__ . '/../views/trivial/dashboard.php';
     }
 
     public function setDisponibilidad(int $partidaId): void
@@ -107,7 +107,7 @@ class DashboardController
         $user = Auth::user();
         $participante = (new ParticipanteModel())->findByUsuarioId($user['id']);
         if (!$participante) {
-            header('Location: /dashboard');
+            header('Location: /trivial/dashboard');
             exit;
         }
 
@@ -136,7 +136,7 @@ class DashboardController
         }
 
         $_SESSION['flash_success'] = 'Disponibilidad actualizada.';
-        header('Location: /dashboard');
+        header('Location: /trivial/dashboard');
         exit;
     }
 
@@ -146,13 +146,13 @@ class DashboardController
         $user = Auth::user();
         $participante = (new ParticipanteModel())->findByUsuarioId($user['id']);
         if (!$participante) {
-            header('Location: /dashboard');
+            header('Location: /trivial/dashboard');
             exit;
         }
 
         $dateTime = $_GET['fecha'] ?? null;
         if (!$dateTime) {
-            header('Location: /dashboard');
+            header('Location: /trivial/dashboard');
             exit;
         }
 
@@ -160,7 +160,7 @@ class DashboardController
         // Ocultar medida de seguridad: verificar que el usuario pertenece a la partida
         $partida = $model->findById($partidaId);
         if (!$partida || ($partida['local_id'] != $participante['id'] && $partida['visitante_id'] != $participante['id'])) {
-            header('Location: /dashboard');
+            header('Location: /trivial/dashboard');
             exit;
         }
 
@@ -181,7 +181,7 @@ class DashboardController
         }
 
         $_SESSION['flash_success'] = '¡MATCH! Partida acordada para el ' . date('d/m H:i', strtotime($dateTime));
-        header('Location: /dashboard');
+        header('Location: /trivial/dashboard');
         exit;
     }
 
@@ -191,14 +191,14 @@ class DashboardController
         $user = Auth::user();
         $participante = (new ParticipanteModel())->findByUsuarioId($user['id']);
         if (!$participante) {
-            header('Location: /dashboard');
+            header('Location: /trivial/dashboard');
             exit;
         }
 
         $model = new PartidaModel();
         $partida = $model->findById($partidaId);
         if (!$partida || ($partida['local_id'] != $participante['id'] && $partida['visitante_id'] != $participante['id'])) {
-            header('Location: /dashboard');
+            header('Location: /trivial/dashboard');
             exit;
         }
 
@@ -218,7 +218,7 @@ class DashboardController
         }
 
         $_SESSION['flash_success'] = 'Acuerdo cancelado. El partido vuelve a estar pendiente.';
-        header("Location: /dashboard#match-{$partidaId}");
+        header("Location: /trivial/dashboard#match-{$partidaId}");
         exit;
     }
 
@@ -234,7 +234,7 @@ class DashboardController
             exit;
         }
         
-        header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? '/dashboard'));
+        header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? '/trivial/dashboard'));
         exit;
     }
 }

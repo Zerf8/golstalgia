@@ -14,7 +14,7 @@ class AdminController
             'partidas_pend' => $db->query("SELECT COUNT(*) FROM partidas WHERE estado = 'pendiente'")->fetchColumn(),
         ];
 
-        require_once __DIR__ . '/../views/admin/dashboard.php';
+        require_once __DIR__ . '/../views/trivial/admin/dashboard.php';
     }
 
     // ─── USUARIOS ─────────────────────────────────────────
@@ -23,13 +23,13 @@ class AdminController
         Auth::requireAdmin();
         $model   = new UsuarioModel();
         $usuarios = $model->all();
-        require_once __DIR__ . '/../views/admin/usuarios.php';
+        require_once __DIR__ . '/../views/trivial/admin/usuarios.php';
     }
 
     public function usuarioCreate(): void
     {
         Auth::requireAdmin();
-        require_once __DIR__ . '/../views/admin/usuario_form.php';
+        require_once __DIR__ . '/../views/trivial/admin/usuario_form.php';
     }
 
     public function usuarioStore(): void
@@ -42,7 +42,7 @@ class AdminController
 
         if ($model->emailExists($email)) {
             $_SESSION['flash_error'] = 'Ese email ya está registrado.';
-            header('Location: /admin/usuarios/crear');
+            header('Location: /trivial/admin/usuarios/crear');
             exit;
         }
 
@@ -54,7 +54,7 @@ class AdminController
         ]);
 
         $_SESSION['flash_success'] = 'Usuario creado correctamente.';
-        header('Location: /admin/usuarios');
+        header('Location: /trivial/admin/usuarios');
         exit;
     }
 
@@ -64,7 +64,7 @@ class AdminController
         $model   = new UsuarioModel();
         $usuario = $model->findById($id);
         if (!$usuario) { $this->notFound(); return; }
-        require_once __DIR__ . '/../views/admin/usuario_form.php';
+        require_once __DIR__ . '/../views/trivial/admin/usuario_form.php';
     }
 
     public function usuarioUpdate(int $id): void
@@ -77,7 +77,7 @@ class AdminController
 
         if ($model->emailExists($email, $id)) {
             $_SESSION['flash_error'] = 'Ese email ya está en uso.';
-            header("Location: /admin/usuarios/{$id}/editar");
+            header("Location: /trivial/admin/usuarios/{$id}/editar");
             exit;
         }
 
@@ -90,7 +90,7 @@ class AdminController
         ]);
 
         $_SESSION['flash_success'] = 'Usuario actualizado.';
-        header('Location: /admin/usuarios');
+        header('Location: /trivial/admin/usuarios');
         exit;
     }
 
@@ -100,7 +100,7 @@ class AdminController
         $this->verifyCsrf();
         (new UsuarioModel())->delete($id);
         $_SESSION['flash_success'] = 'Usuario desactivado.';
-        header('Location: /admin/usuarios');
+        header('Location: /trivial/admin/usuarios');
         exit;
     }
 
@@ -109,14 +109,14 @@ class AdminController
     {
         Auth::requireAdmin();
         $participantes = (new ParticipanteModel())->all();
-        require_once __DIR__ . '/../views/admin/participantes.php';
+        require_once __DIR__ . '/../views/trivial/admin/participantes.php';
     }
 
     public function participanteCreate(): void
     {
         Auth::requireAdmin();
         $usuarios = (new UsuarioModel())->all();
-        require_once __DIR__ . '/../views/admin/participante_form.php';
+        require_once __DIR__ . '/../views/trivial/admin/participante_form.php';
     }
 
     public function participanteStore(): void
@@ -129,7 +129,7 @@ class AdminController
             'usuario_id' => !empty($_POST['usuario_id']) ? (int)$_POST['usuario_id'] : null,
         ]);
         $_SESSION['flash_success'] = 'Participante creado.';
-        header('Location: /admin/participantes');
+        header('Location: /trivial/admin/participantes');
         exit;
     }
 
@@ -140,7 +140,7 @@ class AdminController
         $participante = $model->findById($id);
         if (!$participante) { $this->notFound(); return; }
         $usuarios = (new UsuarioModel())->all();
-        require_once __DIR__ . '/../views/admin/participante_form.php';
+        require_once __DIR__ . '/../views/trivial/admin/participante_form.php';
     }
 
     public function participanteUpdate(int $id): void
@@ -153,7 +153,7 @@ class AdminController
             'usuario_id' => !empty($_POST['usuario_id']) ? (int)$_POST['usuario_id'] : null,
         ]);
         $_SESSION['flash_success'] = 'Participante actualizado.';
-        header('Location: /admin/participantes');
+        header('Location: /trivial/admin/participantes');
         exit;
     }
 
@@ -163,7 +163,7 @@ class AdminController
         $this->verifyCsrf();
         (new ParticipanteModel())->delete($id);
         $_SESSION['flash_success'] = 'Participante eliminado.';
-        header('Location: /admin/participantes');
+        header('Location: /trivial/admin/participantes');
         exit;
     }
 
@@ -172,7 +172,7 @@ class AdminController
     {
         Auth::requireAdmin();
         $ligas = (new LigaModel())->all();
-        require_once __DIR__ . '/../views/admin/ligas.php';
+        require_once __DIR__ . '/../views/trivial/admin/ligas.php';
     }
 
     public function ligaCreate(): void
@@ -181,7 +181,7 @@ class AdminController
         $model    = new LigaModel();
         $todosParticipantes = (new ParticipanteModel())->all();
         $inscritosIds = [];
-        require_once __DIR__ . '/../views/admin/liga_form.php';
+        require_once __DIR__ . '/../views/trivial/admin/liga_form.php';
     }
 
     public function ligaStore(): void
@@ -204,7 +204,7 @@ class AdminController
         }
 
         $_SESSION['flash_success'] = 'Liga creada correctamente.';
-        header('Location: /admin/ligas');
+        header('Location: /trivial/admin/ligas');
         exit;
     }
 
@@ -216,7 +216,7 @@ class AdminController
         $todosParticipantes = (new ParticipanteModel())->all();
         $inscritosIds = array_column($model->getParticipantes($id), 'id');
         if (!$liga) { $this->notFound(); return; }
-        require_once __DIR__ . '/../views/admin/liga_form.php';
+        require_once __DIR__ . '/../views/trivial/admin/liga_form.php';
     }
 
     public function ligaUpdate(int $id): void
@@ -245,7 +245,7 @@ class AdminController
         }
 
         $_SESSION['flash_success'] = 'Liga actualizada.';
-        header('Location: /admin/ligas');
+        header('Location: /trivial/admin/ligas');
         exit;
     }
 
@@ -257,7 +257,7 @@ class AdminController
         $liga       = $ligaModel->findById($ligaId);
         if (!$liga) { $this->notFound(); return; }
         $jornadas   = (new JornadaModel())->allByLiga($ligaId);
-        require_once __DIR__ . '/../views/admin/jornadas.php';
+        require_once __DIR__ . '/../views/trivial/admin/jornadas.php';
     }
 
     public function jornadaCreate(int $ligaId): void
@@ -266,7 +266,7 @@ class AdminController
         $liga         = (new LigaModel())->findById($ligaId);
         $nextNumero   = (new JornadaModel())->nextNumero($ligaId);
         $participantes = (new LigaModel())->getParticipantes($ligaId);
-        require_once __DIR__ . '/../views/admin/jornada_form.php';
+        require_once __DIR__ . '/../views/trivial/admin/jornada_form.php';
     }
 
     public function jornadaStore(int $ligaId): void
@@ -299,7 +299,7 @@ class AdminController
         }
 
         $_SESSION['flash_success'] = 'Jornada creada con partidas.';
-        header("Location: /admin/ligas/{$ligaId}/jornadas");
+        header("Location: /trivial/admin/ligas/{$ligaId}/jornadas");
         exit;
     }
 
@@ -310,7 +310,7 @@ class AdminController
         $model   = new PartidaModel();
         $partida = $model->findById($partidaId);
         if (!$partida) { $this->notFound(); return; }
-        require_once __DIR__ . '/../views/admin/resultado_form.php';
+        require_once __DIR__ . '/../views/trivial/admin/resultado_form.php';
     }
 
     public function resultadoStore(int $partidaId): void
@@ -334,7 +334,7 @@ class AdminController
 
         $_SESSION['flash_success'] = 'Resultado guardado.';
         $jornada = (new JornadaModel())->findById($partida['jornada_id']);
-        header("Location: /admin/ligas/{$jornada['liga_id']}/jornadas");
+        header("Location: /trivial/admin/ligas/{$jornada['liga_id']}/jornadas");
         exit;
     }
 
@@ -351,7 +351,7 @@ class AdminController
 
         $_SESSION['flash_success'] = 'Partido marcado como APLAZADO.';
         $jornada = (new JornadaModel())->findById($partida['jornada_id']);
-        header("Location: /admin/ligas/{$jornada['liga_id']}/jornadas");
+        header("Location: /trivial/admin/ligas/{$jornada['liga_id']}/jornadas");
         exit;
     }
 
@@ -373,7 +373,7 @@ class AdminController
             $jornadas = (new JornadaModel())->allByLiga($ligaId);
         }
 
-        require_once __DIR__ . '/../views/admin/partidas.php';
+        require_once __DIR__ . '/../views/trivial/admin/partidas.php';
     }
 
     public function partidaEdit(int $id): void
@@ -382,7 +382,7 @@ class AdminController
         $model = new PartidaModel();
         $partida = $model->findById($id);
         if (!$partida) { $this->notFound(); return; }
-        require_once __DIR__ . '/../views/admin/partida_form.php';
+        require_once __DIR__ . '/../views/trivial/admin/partida_form.php';
     }
 
     public function partidaUpdate(int $id): void
@@ -430,7 +430,7 @@ class AdminController
         }
 
         $_SESSION['flash_success'] = 'Partido actualizado correctamente.';
-        header('Location: /admin/partidas');
+        header('Location: /trivial/admin/partidas');
         exit;
     }
 
@@ -454,7 +454,7 @@ class AdminController
         
         $model = new HorarioModel();
         $horarios = $model->all($jornadaId);
-        require_once __DIR__ . '/../views/admin/config_horarios.php';
+        require_once __DIR__ . '/../views/trivial/admin/config_horarios.php';
     }
 
     public function horarioStore(): void
@@ -470,7 +470,7 @@ class AdminController
         }
         
         $qs = $jornadaId ? "?jornada_id={$jornadaId}" : "";
-        header('Location: /admin/horarios' . $qs);
+        header('Location: /trivial/admin/horarios' . $qs);
         exit;
     }
 
@@ -493,7 +493,7 @@ class AdminController
         $model->update($id, $data);
         
         $_SESSION['flash_success'] = "Fechas de la Jornada {$jornada['numero']} actualizadas.";
-        header("Location: /admin/horarios?jornada_id={$id}");
+        header("Location: /trivial/admin/horarios?jornada_id={$id}");
         exit;
     }
 
@@ -530,7 +530,7 @@ class AdminController
         }
         
         $qs = $jornadaId ? "?jornada_id={$jornadaId}" : "";
-        header('Location: /admin/horarios' . $qs);
+        header('Location: /trivial/admin/horarios' . $qs);
         exit;
     }
 
@@ -583,7 +583,7 @@ class AdminController
         }
         
         $qs = $jornadaId ? "?jornada_id={$jornadaId}" : "";
-        header('Location: /admin/horarios' . $qs);
+        header('Location: /trivial/admin/horarios' . $qs);
         exit;
     }
 
@@ -594,7 +594,7 @@ class AdminController
         $jornadaId = isset($_GET['jornada_id']) ? (int)$_GET['jornada_id'] : null;
         (new HorarioModel())->delete($id);
         $qs = $jornadaId ? "?jornada_id={$jornadaId}" : "";
-        header('Location: /admin/horarios' . $qs);
+        header('Location: /trivial/admin/horarios' . $qs);
         exit;
     }
 
@@ -610,6 +610,6 @@ class AdminController
     private function notFound(): void
     {
         http_response_code(404);
-        require_once __DIR__ . '/../views/404.php';
+        require_once __DIR__ . '/../views/trivial/404.php';
     }
 }

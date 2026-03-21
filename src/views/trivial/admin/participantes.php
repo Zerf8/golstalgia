@@ -11,7 +11,7 @@ ob_start();
   <div class="admin-main">
     <div class="top-bar">
       <h1 class="page-title"><span>🏃</span> Participantes</h1>
-      <a href="/admin/participantes/crear" class="btn btn-primary">+ Nuevo participante</a>
+      <a href="/trivial/admin/participantes/crear" class="btn btn-primary">+ Nuevo participante</a>
     </div>
 
     <div class="card">
@@ -39,8 +39,8 @@ ob_start();
                   <?php endif; ?>
                 </td>
                 <td>
-                  <a href="/admin/participantes/<?= $p['id'] ?>/editar" class="btn btn-sm btn-dark">Editar</a>
-                  <form method="POST" action="/admin/participantes/<?= $p['id'] ?>/eliminar" style="display:inline;"
+                  <a href="/trivial/admin/participantes/<?= $p['id'] ?>/editar" class="btn btn-sm btn-dark">Editar</a>
+                  <form method="POST" action="/trivial/admin/participantes/<?= $p['id'] ?>/eliminar" style="display:inline;"
                         onsubmit="return confirm('¿Eliminar participante <?= htmlspecialchars($p['nombre']) ?>? Esto no borrará sus partidos pero sí su perfil vinculable.')">
                     <input type="hidden" name="csrf_token" value="<?= Auth::csrf() ?>">
                     <button type="submit" class="btn btn-sm btn-rojo">Borrar</button>
@@ -60,5 +60,5 @@ ob_start();
 <?php
 $content = ob_get_clean();
 $pageTitle = 'Participantes — Admin';
-require_once __DIR__ . '/../partials/layout.php';
+require_once __DIR__ . '/../../partials/layout.php';
 ?>

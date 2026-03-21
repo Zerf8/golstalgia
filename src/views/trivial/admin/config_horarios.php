@@ -24,7 +24,7 @@ $dias = [
     <div class="admin-main">
         <div class="top-bar">
             <h1 class="page-title"><span>🕒</span> Configuración de Horarios</h1>
-            <a href="/admin/ligas" class="btn btn-dark">Volver a Ligas</a>
+            <a href="/trivial/admin/ligas" class="btn btn-dark">Volver a Ligas</a>
         </div>
 
         <!-- Selección de Jornada y Fechas -->
@@ -47,7 +47,7 @@ $dias = [
 
                     <!-- Edición de Fechas de la Jornada -->
                     <?php if ($jornada): ?>
-                        <form action="/admin/jornadas/<?= $jornada['id'] ?>/fechas" method="POST" class="admin-flex-form" style="display: flex; gap: 1rem; align-items: flex-end; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
+                        <form action="/trivial/admin/jornadas/<?= $jornada['id'] ?>/fechas" method="POST" class="admin-flex-form" style="display: flex; gap: 1rem; align-items: flex-end; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
                             <input type="hidden" name="csrf_token" value="<?= Auth::csrf() ?>">
                             <div class="form-group">
                                 <label>Fecha Inicio</label>
@@ -67,7 +67,7 @@ $dias = [
         </div>
 
         <!-- Gestión de Tramos -->
-        <form action="/admin/horarios/batch" method="POST">
+        <form action="/trivial/admin/horarios/batch" method="POST">
             <input type="hidden" name="csrf_token" value="<?= Auth::csrf() ?>">
             <input type="hidden" name="jornada_id" value="<?= $jornadaId ?>">
 
@@ -122,7 +122,7 @@ $dias = [
         <div class="card" style="margin-top: 3rem; border-color: var(--verde-cesped); background: rgba(0,0,0,0.3);">
             <div class="card-header" style="color: var(--verde-cesped);">➕ Añadir Nuevo Tramo (Acción Rápida)</div>
             <div class="card-body">
-                <form action="/admin/horarios/guardar" method="POST" class="admin-flex-form" style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
+                <form action="/trivial/admin/horarios/guardar" method="POST" class="admin-flex-form" style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
                     <input type="hidden" name="csrf_token" value="<?= Auth::csrf() ?>">
                     <input type="hidden" name="jornada_id" value="<?= $jornadaId ?>">
                     
@@ -150,5 +150,5 @@ $dias = [
 <?php
 $content = ob_get_clean();
 $pageTitle = 'Horarios — Admin';
-require_once __DIR__ . '/../partials/layout.php';
+require_once __DIR__ . '/../../partials/layout.php';
 ?>

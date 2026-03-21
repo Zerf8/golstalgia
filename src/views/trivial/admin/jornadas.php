@@ -10,20 +10,20 @@ ob_start();
   <div>
     <div class="top-bar">
       <div>
-        <a href="/admin/ligas" style="font-size:0.8rem; color:#888; text-decoration:none;">← Ligas</a>
+        <a href="/trivial/admin/ligas" style="font-size:0.8rem; color:#888; text-decoration:none;">← Ligas</a>
         <h1 class="page-title" style="margin:0.25rem 0 0;">
           <span>📅</span> Jornadas — <?= htmlspecialchars($liga['nombre']) ?>
           <span class="badge badge-amarillo" style="font-size:0.75rem; vertical-align:middle;">T<?= $liga['temporada'] ?></span>
         </h1>
       </div>
-      <a href="/admin/ligas/<?= $liga['id'] ?>/jornadas/crear" class="btn btn-primary">+ Nueva jornada</a>
+      <a href="/trivial/admin/ligas/<?= $liga['id'] ?>/jornadas/crear" class="btn btn-primary">+ Nueva jornada</a>
     </div>
 
     <?php if (empty($jornadas)): ?>
       <div class="card">
         <div class="card-body" style="text-align:center; padding:3rem 1rem;">
           <p style="color:#888; margin-bottom:1rem;">No hay jornadas creadas para esta liga.</p>
-          <a href="/admin/ligas/<?= $liga['id'] ?>/jornadas/crear" class="btn btn-primary">Crear Jornada 1</a>
+          <a href="/trivial/admin/ligas/<?= $liga['id'] ?>/jornadas/crear" class="btn btn-primary">Crear Jornada 1</a>
         </div>
       </div>
     <?php else: ?>
@@ -71,9 +71,9 @@ ob_start();
                     <?= strtoupper($p['estado']) ?>
                   </span>
                   <div style="margin-top:0.25rem; display:flex; gap:0.25rem; justify-content:center;">
-                    <a href="/admin/partidas/<?= $p['id'] ?>/resultado" class="btn btn-sm btn-verde">Resultado</a>
+                    <a href="/trivial/admin/partidas/<?= $p['id'] ?>/resultado" class="btn btn-sm btn-verde">Resultado</a>
                     <?php if ($p['estado'] !== 'aplazada'): ?>
-                      <form action="/admin/partidas/<?= $p['id'] ?>/aplazar" method="POST" onsubmit="return confirm('¿Seguro que quieres aplazar este partido? Podrán elegir horario en cualquier semana.')">
+                      <form action="/trivial/admin/partidas/<?= $p['id'] ?>/aplazar" method="POST" onsubmit="return confirm('¿Seguro que quieres aplazar este partido? Podrán elegir horario en cualquier semana.')">
                         <?= Auth::csrfInput() ?>
                         <button type="submit" class="btn btn-sm btn-gris" title="Aplazar partido">⏳</button>
                       </form>
@@ -103,5 +103,5 @@ ob_start();
 <?php
 $content = ob_get_clean();
 $pageTitle = 'Jornadas — Admin';
-require_once __DIR__ . '/../partials/layout.php';
+require_once __DIR__ . '/../../partials/layout.php';
 ?>

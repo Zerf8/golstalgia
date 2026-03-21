@@ -35,12 +35,12 @@ class HomeController
             }
         }
 
-        require_once __DIR__ . '/../views/home.php';
+        require_once __DIR__ . '/../views/trivial/home.php';
     }
 
     public function reglas(): void
     {
-        require_once __DIR__ . '/../views/reglas.php';
+        require_once __DIR__ . '/../views/trivial/reglas.php';
     }
 
     public function calendario(): void
@@ -63,6 +63,11 @@ class HomeController
             }
         }
 
-        require_once __DIR__ . '/../views/calendario.php';
+        require_once __DIR__ . '/../views/trivial/calendario.php';
+    }
+
+    public function mainHome(): void
+    {
+        require_once __DIR__ . '/../views/main_home.php';
     }
 }

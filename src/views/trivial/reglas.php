@@ -80,7 +80,7 @@ $fullWidth = true;
             </div>
 
             <div class="rules-download-area">
-                <a href="/normativa/I CAMPEONATO TRIVIAL GOLSTALGIA.pdf" target="_blank" class="btn btn-primary" style="padding: 1.5rem 3rem; font-size: 1.2rem;">DESCARGAR PDF ORIGINAL</a>
+                <a href="/trivial/normativa/I CAMPEONATO TRIVIAL GOLSTALGIA.pdf" target="_blank" class="btn btn-primary" style="padding: 1.5rem 3rem; font-size: 1.2rem;">DESCARGAR PDF ORIGINAL</a>
             </div>
         </div>
     </div>
@@ -88,5 +88,5 @@ $fullWidth = true;
 
 <?php 
 $content = ob_get_clean();
-require_once __DIR__ . '/partials/layout.php';
+require_once __DIR__ . '/../partials/layout.php';
 ?>

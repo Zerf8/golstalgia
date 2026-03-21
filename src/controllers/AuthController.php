@@ -5,20 +5,20 @@ class AuthController
     public function loginForm(): void
     {
         if (Auth::check()) {
-            header('Location: /dashboard');
+            header('Location: /trivial/dashboard');
             exit;
         }
 
         $googleHelper = new GoogleHelper();
         $googleLoginUrl = $googleHelper->getAuthUrl();
 
-        require_once __DIR__ . '/../views/auth/login.php';
+        require_once __DIR__ . '/../views/trivial/auth/login.php';
     }
 
     public function login(): void
     {
         if (!Auth::verifyCsrf($_POST['csrf_token'] ?? '')) {
-            $this->redirectWithError('/auth/login', 'Token de seguridad inválido.');
+            $this->redirectWithError('/trivial/auth/login', 'Token de seguridad inválido.');
             return;
         }
 
@@ -26,7 +26,7 @@ class AuthController
         $password = $_POST['password'] ?? '';
 
         if (!$email || !$password) {
-            $this->redirectWithError('/auth/login', 'Email y contraseña son obligatorios.');
+            $this->redirectWithError('/trivial/auth/login', 'Email y contraseña son obligatorios.');
             return;
         }
 
@@ -34,12 +34,12 @@ class AuthController
         $user  = $model->findByEmail($email);
 
         if (!$user || !Auth::verifyPassword($password, $user['password'])) {
-            $this->redirectWithError('/auth/login', 'Email o contraseña incorrectos.');
+            $this->redirectWithError('/trivial/auth/login', 'Email o contraseña incorrectos.');
             return;
         }
 
         Auth::login($user);
-        header('Location: /dashboard');
+        header('Location: /trivial/dashboard');
         exit;
     }
 
@@ -47,20 +47,20 @@ class AuthController
     {
         $code = $_GET['code'] ?? null;
         if (!$code) {
-            $this->redirectWithError('/auth/login', 'Fallo al autenticar con Google.');
+            $this->redirectWithError('/trivial/auth/login', 'Fallo al autenticar con Google.');
             return;
         }
 
         $googleHelper = new GoogleHelper();
         $token = $googleHelper->getAccessToken($code);
         if (!$token) {
-            $this->redirectWithError('/auth/login', 'No se pudo obtener el token de Google.');
+            $this->redirectWithError('/trivial/auth/login', 'No se pudo obtener el token de Google.');
             return;
         }
 
         $userInfo = $googleHelper->getUserInfo($token);
         if (!$userInfo || !isset($userInfo['email'])) {
-            $this->redirectWithError('/auth/login', 'No se pudo obtener la información del usuario.');
+            $this->redirectWithError('/trivial/auth/login', 'No se pudo obtener la información del usuario.');
             return;
         }
 
@@ -92,9 +92,9 @@ class AuthController
 
         if ($user) {
             Auth::login($user);
-            header('Location: /dashboard');
+            header('Location: /trivial/dashboard');
         } else {
-            $this->redirectWithError('/auth/login', 'Error al crear o recuperar el usuario.');
+            $this->redirectWithError('/trivial/auth/login', 'Error al crear o recuperar el usuario.');
         }
         exit;
     }
@@ -102,12 +102,12 @@ class AuthController
     public function registroForm(): void
     {
         if (Auth::check()) {
-            header('Location: /dashboard');
+            header('Location: /trivial/dashboard');
             exit;
         }
         $googleHelper = new GoogleHelper();
         $googleLoginUrl = $googleHelper->getAuthUrl();
-        require_once __DIR__ . '/../views/auth/registro.php';
+        require_once __DIR__ . '/../views/trivial/auth/registro.php';
     }
 
     public function registro(): void
@@ -141,7 +141,7 @@ class AuthController
 
         if ($userId) {
             $_SESSION['flash_success'] = 'Registro completado. Ya puedes iniciar sesión.';
-            header('Location: /auth/login');
+            header('Location: /trivial/auth/login');
         } else {
             $this->redirectWithError('/auth/registro', 'Error al registrar el usuario.');
         }

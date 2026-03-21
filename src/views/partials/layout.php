@@ -28,15 +28,15 @@
 
     <nav class="main-nav" id="main-nav">
       <a href="/" class="nav-link <?= $_SERVER['REQUEST_URI'] === '/' ? 'active' : '' ?>">Inicio</a>
-      <a href="/calendario" class="nav-link <?= $_SERVER['REQUEST_URI'] === '/calendario' ? 'active' : '' ?>">Calendario</a>
-      <a href="/reglas" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/reglas') ? 'active' : '' ?>">Reglas</a>
+      <a href="/trivial" class="nav-link <?= $_SERVER['REQUEST_URI'] === '/trivial' ? 'active' : '' ?>">Liga Trivial</a>
+      <a href="/trivial/calendario" class="nav-link <?= $_SERVER['REQUEST_URI'] === '/trivial/calendario' ? 'active' : '' ?>">Calendario</a>
+      <a href="/trivial/reglas" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/trivial/reglas') ? 'active' : '' ?>">Reglas</a>
       <a href="https://www.ivoox.com/podcast-golstalgia_sq_f1287524_1.html" class="nav-link" target="_blank" rel="noopener">Podcast 🎙️</a>
-      <a href="https://www.patreon.com/cw/golstalgia_" class="nav-link" target="_blank" rel="noopener">Patreon 🧡</a>
       
       <?php if (Auth::check()): ?>
-        <a href="/dashboard" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/dashboard') ? 'active' : '' ?>">Mi Liga</a>
+        <a href="/trivial/dashboard" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/trivial/dashboard') ? 'active' : '' ?>">Mi Liga</a>
         <?php if (Auth::isAdmin()): ?>
-          <a href="/admin/usuarios" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/admin') ? 'active' : '' ?>">Panel Admin</a>
+          <a href="/trivial/admin/usuarios" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/trivial/admin') ? 'active' : '' ?>">Panel Admin</a>
         <?php endif; ?>
       <?php endif; ?>
 
@@ -44,10 +44,10 @@
       <div class="mobile-auth-links">
         <?php if (Auth::check()): ?>
           <span class="user-name" style="padding:0.5rem 1.2rem;"><?= htmlspecialchars(Auth::user()['nombre']) ?></span>
-          <a href="/auth/logout" class="btn-logout" style="margin:0.5rem 1rem;">Salir</a>
+          <a href="/trivial/auth/logout" class="btn-logout" style="margin:0.5rem 1rem;">Salir</a>
         <?php else: ?>
-          <a href="/auth/login" class="nav-link">Entrar</a>
-          <a href="/auth/registro" class="btn btn-primary btn-sm">Regístrate</a>
+          <a href="/trivial/auth/login" class="nav-link">Entrar</a>
+          <a href="/trivial/auth/registro" class="btn btn-primary btn-sm">Regístrate</a>
         <?php endif; ?>
       </div>
     </nav>
@@ -79,7 +79,7 @@
                 <p class="notif-empty">No tienes notificaciones</p>
               <?php else: ?>
                 <?php foreach ($recentNotifs as $n): 
-                   $notifUrl = $n['partida_id'] ? "/dashboard#match-" . $n['partida_id'] : "#";
+                   $notifUrl = $n['partida_id'] ? "/trivial/dashboard#match-" . $n['partida_id'] : "#";
                 ?>
                   <a href="<?= $notifUrl ?>" class="notif-item-link">
                     <div class="notif-item <?= $n['leida'] ? '' : 'is-unread' ?>" data-id="<?= $n['id'] ?>">

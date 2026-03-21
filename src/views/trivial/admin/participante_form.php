@@ -15,7 +15,7 @@ ob_start();
         <span><?= $isEdit ? '✏️' : '➕' ?></span>
         <?= $isEdit ? 'Editar participante' : 'Nuevo participante' ?>
       </h1>
-      <a href="/admin/participantes" class="btn btn-dark">← Volver</a>
+      <a href="/trivial/admin/participantes" class="btn btn-dark">← Volver</a>
     </div>
 
     <div class="card" style="max-width: 600px;">
@@ -50,7 +50,7 @@ ob_start();
             <button type="submit" class="btn btn-primary">
               <?= $isEdit ? '💾 Guardar cambios' : '➕ Crear participante' ?>
             </button>
-            <a href="/admin/participantes" class="btn btn-dark">Cancelar</a>
+            <a href="/trivial/admin/participantes" class="btn btn-dark">Cancelar</a>
           </div>
         </form>
       </div>
@@ -62,5 +62,5 @@ ob_start();
 <?php
 $content = ob_get_clean();
 $pageTitle = ($isEdit ? 'Editar' : 'Nuevo') . ' participante — Admin';
-require_once __DIR__ . '/../partials/layout.php';
+require_once __DIR__ . '/../../partials/layout.php';
 ?>

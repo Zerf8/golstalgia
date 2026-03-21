@@ -11,7 +11,7 @@ ob_start();
     <div class="top-bar">
       <h1 class="page-title" style="margin:0;"><span>⚽</span> Gestión de Partidos</h1>
       
-      <form method="GET" action="/admin/partidas" style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+      <form method="GET" action="/trivial/admin/partidas" style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
         <select name="liga_id" class="form-control" onchange="this.form.submit()" style="width:auto;">
           <option value="">Todas las ligas</option>
           <?php foreach ($ligas as $l): ?>
@@ -41,7 +41,7 @@ ob_start();
           <?php endforeach; ?>
         </select>
 
-        <a href="/admin/partidas" class="btn btn-dark" title="Limpiar filtros">🧹</a>
+        <a href="/trivial/admin/partidas" class="btn btn-dark" title="Limpiar filtros">🧹</a>
       </form>
     </div>
 
@@ -114,7 +114,7 @@ ob_start();
                     <?php endif; ?>
                   </td>
                   <td style="text-align:right;">
-                    <a href="/admin/partidas/<?= $p['id'] ?>/editar" class="btn btn-sm btn-dark">✏️ Editar</a>
+                    <a href="/trivial/admin/partidas/<?= $p['id'] ?>/editar" class="btn btn-sm btn-dark">✏️ Editar</a>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -130,5 +130,5 @@ ob_start();
 <?php
 $content = ob_get_clean();
 $pageTitle = 'Partidos — Admin';
-require_once __DIR__ . '/../partials/layout.php';
+require_once __DIR__ . '/../../partials/layout.php';
 ?>

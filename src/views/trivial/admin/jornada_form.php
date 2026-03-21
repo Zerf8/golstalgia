@@ -10,18 +10,18 @@ ob_start();
   <div>
     <div class="top-bar">
       <div>
-        <a href="/admin/ligas/<?= $liga['id'] ?>/jornadas" style="font-size:0.8rem; color:#888; text-decoration:none;">
+        <a href="/trivial/admin/ligas/<?= $liga['id'] ?>/jornadas" style="font-size:0.8rem; color:#888; text-decoration:none;">
           ← <?= htmlspecialchars($liga['nombre']) ?>
         </a>
         <h1 class="page-title" style="margin:0.25rem 0 0;"><span>📅</span> Nueva Jornada <?= $nextNumero ?></h1>
       </div>
-      <a href="/admin/ligas/<?= $liga['id'] ?>/jornadas" class="btn btn-dark">← Volver</a>
+      <a href="/trivial/admin/ligas/<?= $liga['id'] ?>/jornadas" class="btn btn-dark">← Volver</a>
     </div>
 
     <div class="card">
       <div class="card-header">Configurar Jornada <?= $nextNumero ?></div>
       <div class="card-body">
-        <form method="POST" action="/admin/ligas/<?= $liga['id'] ?>/jornadas/guardar" id="jornada-form">
+        <form method="POST" action="/trivial/admin/ligas/<?= $liga['id'] ?>/jornadas/guardar" id="jornada-form">
           <input type="hidden" name="csrf_token" value="<?= Auth::csrf() ?>">
           <input type="hidden" name="numero" value="<?= $nextNumero ?>">
 
@@ -89,7 +89,7 @@ ob_start();
 
           <div style="display:flex; gap:0.75rem;">
             <button type="submit" class="btn btn-primary">💾 Crear jornada con partidas</button>
-            <a href="/admin/ligas/<?= $liga['id'] ?>/jornadas" class="btn btn-dark">Cancelar</a>
+            <a href="/trivial/admin/ligas/<?= $liga['id'] ?>/jornadas" class="btn btn-dark">Cancelar</a>
           </div>
         </form>
       </div>
@@ -146,5 +146,5 @@ ob_start();
 <?php
 $content = ob_get_clean();
 $pageTitle = 'Nueva Jornada — Admin';
-require_once __DIR__ . '/../partials/layout.php';
+require_once __DIR__ . '/../../partials/layout.php';
 ?>

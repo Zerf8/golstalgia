@@ -39,7 +39,7 @@ ob_start();
     <div class="card">
       <div class="card-header">Introduce el resultado</div>
       <div class="card-body">
-        <form method="POST" action="/admin/partidas/<?= $partida['id'] ?>/resultado/guardar">
+        <form method="POST" action="/trivial/admin/partidas/<?= $partida['id'] ?>/resultado/guardar">
           <input type="hidden" name="csrf_token" value="<?= Auth::csrf() ?>">
 
           <div style="display:grid; grid-template-columns:1fr auto 1fr; gap:1rem; align-items:end;">
@@ -105,5 +105,5 @@ ob_start();
 <?php
 $content = ob_get_clean();
 $pageTitle = 'Resultado — Admin';
-require_once __DIR__ . '/../partials/layout.php';
+require_once __DIR__ . '/../../partials/layout.php';
 ?>

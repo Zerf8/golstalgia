@@ -21,7 +21,7 @@ if (!empty($partida['fecha_acordada'])) {
       <button onclick="history.back()" class="btn btn-dark">← Volver</button>
     </div>
 
-    <form method="POST" action="/admin/partidas/<?= $partida['id'] ?>/actualizar" class="form-container">
+    <form method="POST" action="/trivial/admin/partidas/<?= $partida['id'] ?>/actualizar" class="form-container">
       <input type="hidden" name="csrf_token" value="<?= Auth::csrf() ?>">
 
       <div class="card" style="margin-bottom:1.5rem;">
@@ -103,5 +103,5 @@ document.getElementById('select-estado').addEventListener('change', function() {
 <?php
 $content = ob_get_clean();
 $pageTitle = 'Editar Partido — Admin';
-require_once __DIR__ . '/../partials/layout.php';
+require_once __DIR__ . '/../../partials/layout.php';
 ?>

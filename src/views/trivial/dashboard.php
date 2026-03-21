@@ -148,7 +148,7 @@ ob_start();
                     $showExpanded = ($p['estado'] === 'acordada' || !empty($p['rival_slots']) || !empty($p['mis_slots']));
                   ?>
                   <div id="proposal-<?= $p['id'] ?>" class="proposal-container" style="<?= $showExpanded ? 'display:grid;' : 'display:none;' ?> width: 100%; padding: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.15);">
-                    <form action="/dashboard/disponibilidad/<?= $p['id'] ?>" method="POST" id="form-disponibilidad-<?= $p['id'] ?>">
+                    <form action="/trivial/dashboard/disponibilidad/<?= $p['id'] ?>" method="POST" id="form-disponibilidad-<?= $p['id'] ?>">
                         <input type="hidden" name="csrf_token" value="<?= Auth::csrf() ?>">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
                             <p style="font-size: 0.8rem; font-weight: 700; color: var(--amarillo-retro); margin: 0; text-transform: uppercase; letter-spacing: 1px;">
@@ -159,7 +159,7 @@ ob_start();
                                 <?php endif; ?>
                             </p>
                             <?php if ($p['estado'] === 'acordada'): ?>
-                                <a href="/dashboard/cancelar-acuerdo/<?= $p['id'] ?>" class="btn-reschedule" style="font-size: 0.6rem; padding: 0.4rem 0.8rem; border-radius: 4px;">CANCELAR PARTIDO</a>
+                                <a href="/trivial/dashboard/cancelar-acuerdo/<?= $p['id'] ?>" class="btn-reschedule" style="font-size: 0.6rem; padding: 0.4rem 0.8rem; border-radius: 4px;">CANCELAR PARTIDO</a>
                             <?php endif; ?>
                         </div>
                         
@@ -390,5 +390,5 @@ window.addEventListener('DOMContentLoaded', () => {
 <?php
 $content = ob_get_clean();
 $pageTitle = 'Dashboard — Golstalgia';
-require_once __DIR__ . '/partials/layout.php';
+require_once __DIR__ . '/../partials/layout.php';
 ?>

@@ -10,7 +10,7 @@ ob_start();
   <div class="admin-main">
     <div class="top-bar">
       <h1 class="page-title"><span>👤</span> Usuarios</h1>
-      <a href="/admin/usuarios/crear" class="btn btn-primary">+ Nuevo usuario</a>
+      <a href="/trivial/admin/usuarios/crear" class="btn btn-primary">+ Nuevo usuario</a>
     </div>
 
     <div class="card">
@@ -52,9 +52,9 @@ ob_start();
                   <?= date('d/m/Y', strtotime($u['created_at'])) ?>
                 </td>
                 <td>
-                  <a href="/admin/usuarios/<?= $u['id'] ?>/editar" class="btn btn-sm btn-dark">Editar</a>
+                  <a href="/trivial/admin/usuarios/<?= $u['id'] ?>/editar" class="btn btn-sm btn-dark">Editar</a>
                   <?php if ($u['id'] !== Auth::user()['id'] && $u['activo']): ?>
-                  <form method="POST" action="/admin/usuarios/<?= $u['id'] ?>/eliminar" style="display:inline;"
+                  <form method="POST" action="/trivial/admin/usuarios/<?= $u['id'] ?>/eliminar" style="display:inline;"
                         onsubmit="return confirm('⚠️ ¡ATENCIÓN! ¿Estás seguro de que quieres dar de BAJA a <?= htmlspecialchars($u['nombre']) ?>? El usuario ya no podrá acceder a la liga.')">
                     <input type="hidden" name="csrf_token" value="<?= Auth::csrf() ?>">
                     <button type="submit" class="btn btn-sm btn-rojo">Baja</button>
@@ -75,5 +75,5 @@ ob_start();
 <?php
 $content = ob_get_clean();
 $pageTitle = 'Usuarios — Admin';
-require_once __DIR__ . '/../partials/layout.php';
+require_once __DIR__ . '/../../partials/layout.php';
 ?>

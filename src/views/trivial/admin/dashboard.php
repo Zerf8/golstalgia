@@ -30,28 +30,28 @@ ob_start();
     </div>
 
     <div class="admin-grid-cards">
-      <a href="/admin/usuarios" class="admin-card-link">
+      <a href="/trivial/admin/usuarios" class="admin-card-link">
         <div class="card-icon">👤</div>
         <h3>Gestión de Usuarios</h3>
         <p>Añade, edita o desactiva las cuentas de los participantes y administradores.</p>
         <div class="card-action">Ir ahora →</div>
       </a>
 
-      <a href="/admin/participantes" class="admin-card-link">
+      <a href="/trivial/admin/participantes" class="admin-card-link">
         <div class="card-icon">🏃</div>
         <h3>Jugadores y Perfiles</h3>
         <p>Vincula usuarios a la liga y gestiona sus datos de participación.</p>
         <div class="card-action">Ir ahora →</div>
       </a>
 
-      <a href="/admin/ligas" class="admin-card-link">
+      <a href="/trivial/admin/ligas" class="admin-card-link">
         <div class="card-icon">🏆</div>
         <h3>Ligas y Jornadas</h3>
         <p>Configura las competiciones activas y el calendario de enfrentamientos.</p>
         <div class="card-action">Ir ahora →</div>
       </a>
 
-      <a href="/admin/horarios" class="admin-card-link">
+      <a href="/trivial/admin/horarios" class="admin-card-link">
         <div class="card-icon">🕒</div>
         <h3>Configuración de Horarios</h3>
         <p>Define los tramos predefinidos y específicos por jornada.</p>
@@ -96,5 +96,5 @@ ob_start();
 <?php
 $content = ob_get_clean();
 $pageTitle = 'Administración — Golstalgia';
-require_once __DIR__ . '/../partials/layout.php';
+require_once __DIR__ . '/../../partials/layout.php';
 ?>
