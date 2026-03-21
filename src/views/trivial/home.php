@@ -90,6 +90,7 @@ $pageTitle = "Golstalgia – La Liga Trivial de Fútbol Retro";
                 <tr>
                   <th style="padding-left: 1.5rem;">POS</th>
                   <th>JUGADOR</th>
+                  <th style="text-align: center;">PJ</th>
                   <th style="text-align: center;">V</th>
                   <th style="text-align: center;">E</th>
                   <th style="text-align: center;">D</th>
@@ -107,8 +108,9 @@ $pageTitle = "Golstalgia – La Liga Trivial de Fútbol Retro";
                         <strong><?= htmlspecialchars($fila['nombre']) ?></strong>
                       </div>
                     </td>
+                    <td style="text-align: center;"><?= $fila['partidas_jugadas'] ?></td>
                     <td style="text-align: center;"><?= $fila['victorias'] ?></td>
-                    <td style="text-align: center;"><?= $fila['partidas_jugadas'] - ($fila['victorias'] + $fila['derrotas']) ?></td>
+                    <td style="text-align: center;"><?= $fila['empates'] ?></td>
                     <td style="text-align: center;"><?= $fila['derrotas'] ?></td>
                     <td style="text-align: center; opacity: 0.7;"><?= $fila['puntos_favor'] ?></td>
                     <td style="text-align: center; opacity: 0.7;"><?= $fila['puntos_contra'] ?></td>

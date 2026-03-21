@@ -36,6 +36,7 @@
         <a href="https://www.ivoox.com/podcast-golstalgia_sq_f1287524_1.html" class="nav-link" target="_blank" rel="noopener">Podcast 🎙️</a>
         <a href="https://www.patreon.com/cw/golstalgia_" class="nav-link" target="_blank" rel="noopener">Patreon 💎</a>
       <?php else: ?>
+        <a href="/trivial/" class="nav-link <?= ($_SERVER['REQUEST_URI'] === '/trivial' || $_SERVER['REQUEST_URI'] === '/trivial/') ? 'active' : '' ?>">Liga Trivial</a>
         <a href="/trivial/calendario" class="nav-link <?= $_SERVER['REQUEST_URI'] === '/trivial/calendario' ? 'active' : '' ?>">Calendario</a>
         <a href="/trivial/reglas" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/trivial/reglas') ? 'active' : '' ?>">Reglas</a>
       <?php endif; ?>
@@ -161,7 +162,7 @@
       <a href="https://www.patreon.com/cw/golstalgia_" target="_blank" rel="noopener" style="color: var(--amarillo-retro); text-decoration: none; font-weight: 800;">Patreon 💎</a>
     </div>
   <?php endif; ?>
-  <p>Golstalgia <?= $_SERVER['REQUEST_URI'] !== '/' ? 'Liga Trivial' : '' ?> &copy; <?= date('Y') ?> (Est. 2026) &mdash; by Josep y Sagra</p>
+  <p>Golstalgia <?= $_SERVER['REQUEST_URI'] !== '/' ? 'Liga Trivial' : '' ?> &copy; <?= date('Y') ?> (Est. 2016) &mdash; by Josep y Sagra</p>
   <p style="font-size: 0.7rem; opacity: 0.6; margin-top: 5px;">Sitio Web creado por Zerf v. 1.01 2026</p>
 </footer>
 
