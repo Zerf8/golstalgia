@@ -4,10 +4,6 @@ ob_start();
 ?>
 
 <div class="main-home-container">
-    <section class="hero-simple" style="text-align: center; padding: 4rem 1rem; background: var(--azul-oscuro); border-bottom: 2px solid var(--amarillo);">
-        <h1 style="font-family: var(--font-head); font-size: 3.5rem; color: var(--amarillo); margin-bottom: 1rem;">GOLSTALGIA</h1>
-        <p style="font-size: 1.25rem; opacity: 0.9; max-width: 800px; margin: 0 auto;">El podcast donde el fútbol de ayer se vive como nunca. Historia, curiosidades y toda la pasión del fútbol retro.</p>
-    </section>
 
     <section class="podcast-section" style="padding: 4rem 1rem; max-width: 1000px; margin: 0 auto;">
         <h2 style="font-family: var(--font-head); text-align: center; margin-bottom: 2rem; font-size: 2rem;">🎙️ ESCUCHA NUESTRO PODCAST</h2>
