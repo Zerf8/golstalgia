@@ -18,11 +18,6 @@ ob_start();
             </iframe>
         </div>
 
-        <div style="margin-top: 3rem; text-align: center;">
-            <a href="/trivial" class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1.5rem; font-family: var(--font-head);">
-                🏆 ENTRAR A LA LIGA TRIVIAL
-            </a>
-        </div>
     </section>
 </div>
 

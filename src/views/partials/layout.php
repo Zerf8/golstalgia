@@ -22,7 +22,9 @@
       <img src="/public/img/logo_oficial.jpg" alt="Golstalgia Logo" class="logo-img">
       <div class="logo-text-group">
         <span class="logo-text">GOLSTALGIA</span>
-        <span class="logo-sub">LIGA TRIVIAL</span>
+        <?php if ($_SERVER['REQUEST_URI'] !== '/'): ?>
+          <span class="logo-sub">LIGA TRIVIAL</span>
+        <?php endif; ?>
       </div>
     </a>
 
@@ -35,6 +37,7 @@
       <?php endif; ?>
 
       <a href="https://www.ivoox.com/podcast-golstalgia_sq_f1287524_1.html" class="nav-link" target="_blank" rel="noopener">Podcast 🎙️</a>
+      <a href="https://www.patreon.com/cw/golstalgia_" class="nav-link" target="_blank" rel="noopener">Patreon 💎</a>
       
       <?php if ($_SERVER['REQUEST_URI'] !== '/' && Auth::check()): ?>
         <a href="/trivial/dashboard" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/trivial/dashboard') ? 'active' : '' ?>">Mi Liga</a>
@@ -149,7 +152,7 @@
 </main>
 
 <footer class="site-footer">
-  <p>Golstalgia Liga Trivial &copy; <?= date('Y') ?> &mdash; by Josep y Sagra</p>
+  <p>Golstalgia <?= $_SERVER['REQUEST_URI'] !== '/' ? 'Liga Trivial' : '' ?> &copy; <?= date('Y') ?> &mdash; by Josep y Sagra</p>
   <p style="font-size: 0.7rem; opacity: 0.6; margin-top: 5px;">Sitio Web creado por Zerf v. 1.01 2026</p>
 </footer>
 
