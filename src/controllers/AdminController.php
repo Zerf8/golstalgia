@@ -253,20 +253,6 @@ class AdminController
     public function jornadas($ligaId = null): void
     {
         Auth::requireAdmin();
-        $db = Database::connect();
-
-        // One-time schema update for classification
-        try {
-            // We use a simple query to check if the column exists first to be safer
-            $check = $db->query("SHOW COLUMNS FROM clasificacion LIKE 'empates'")->fetch();
-            if (!$check) {
-                $db->exec("ALTER TABLE clasificacion ADD COLUMN empates INT DEFAULT 0 AFTER victorias");
-                // Rebuild all since we just added the column
-                $ligas = (new LigaModel())->all();
-                $pm = new PartidaModel();
-                foreach ($ligas as $l) { $pm->rebuildClasificacion((int)$l['id']); }
-            }
-        } catch (Exception $e) { /* ignore to prevent 500 */ }
         
         if ($ligaId === null || $ligaId === '') {
             $ligas = (new LigaModel())->all();
@@ -279,7 +265,6 @@ class AdminController
         
         $jornadas = (new JornadaModel())->allByLiga((int)$ligaId);
         require_once __DIR__ . '/../views/trivial/admin/jornadas.php';
-    }
     }
 
     public function jornadaCreate(int $ligaId): void
