@@ -183,7 +183,7 @@ ob_start();
                                 if ($isOccupied && !$isThisMatchAgreement) $class .= ' is-occupied';
                                 if ($isRivalSelected && $p['estado'] === 'pendiente') $class .= ' is-clickable-rival';
 
-                                $rivalHref = "/dashboard/aceptar/{$p['id']}?fecha=" . urlencode($fullSlot);
+                                $rivalHref = "/trivial/dashboard/aceptar/{$p['id']}?fecha=" . urlencode($fullSlot);
                             ?>
                                 <?php if ($isRivalSelected && $p['estado'] === 'pendiente'): ?>
                                     <a href="<?= $rivalHref ?>" class="slot-checkbox <?= $class ?>" title="Confirmar este horario">
