@@ -29,11 +29,14 @@
     <nav class="main-nav" id="main-nav">
       <a href="/" class="nav-link <?= $_SERVER['REQUEST_URI'] === '/' ? 'active' : '' ?>">Inicio</a>
       <a href="/trivial" class="nav-link <?= $_SERVER['REQUEST_URI'] === '/trivial' ? 'active' : '' ?>">Liga Trivial</a>
-      <a href="/trivial/calendario" class="nav-link <?= $_SERVER['REQUEST_URI'] === '/trivial/calendario' ? 'active' : '' ?>">Calendario</a>
-      <a href="/trivial/reglas" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/trivial/reglas') ? 'active' : '' ?>">Reglas</a>
+      <?php if ($_SERVER['REQUEST_URI'] !== '/'): ?>
+        <a href="/trivial/calendario" class="nav-link <?= $_SERVER['REQUEST_URI'] === '/trivial/calendario' ? 'active' : '' ?>">Calendario</a>
+        <a href="/trivial/reglas" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/trivial/reglas') ? 'active' : '' ?>">Reglas</a>
+      <?php endif; ?>
+
       <a href="https://www.ivoox.com/podcast-golstalgia_sq_f1287524_1.html" class="nav-link" target="_blank" rel="noopener">Podcast 🎙️</a>
       
-      <?php if (Auth::check()): ?>
+      <?php if ($_SERVER['REQUEST_URI'] !== '/' && Auth::check()): ?>
         <a href="/trivial/dashboard" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/trivial/dashboard') ? 'active' : '' ?>">Mi Liga</a>
         <?php if (Auth::isAdmin()): ?>
           <a href="/trivial/admin/usuarios" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/trivial/admin') ? 'active' : '' ?>">Panel Admin</a>
@@ -41,6 +44,7 @@
       <?php endif; ?>
 
       <!-- Auth links inside mobile menu -->
+      <?php if ($_SERVER['REQUEST_URI'] !== '/'): ?>
       <div class="mobile-auth-links">
         <?php if (Auth::check()): ?>
           <span class="user-name" style="padding:0.5rem 1.2rem;"><?= htmlspecialchars(Auth::user()['nombre']) ?></span>
@@ -50,16 +54,18 @@
           <a href="/trivial/auth/registro" class="btn btn-primary btn-sm">Regístrate</a>
         <?php endif; ?>
       </div>
+      <?php endif; ?>
     </nav>
 
     <div class="header-actions">
-      <?php if (Auth::check()): 
-          $notifModel = new NotificationModel();
-          $unreadCount = $notifModel->getUnreadCount(Auth::user()['id']);
-          $recentNotifs = $notifModel->getByUser(Auth::user()['id'], 5);
-      ?>
-        <!-- Notificaciones -->
-        <div class="notifications-wrapper" id="notif-wrapper">
+      <?php if ($_SERVER['REQUEST_URI'] !== '/'): ?>
+        <?php if (Auth::check()): 
+            $notifModel = new NotificationModel();
+            $unreadCount = $notifModel->getUnreadCount(Auth::user()['id']);
+            $recentNotifs = $notifModel->getByUser(Auth::user()['id'], 5);
+        ?>
+          <!-- Notificaciones (solo fuera de la Home) -->
+          <div class="notifications-wrapper" id="notif-wrapper">
           <button class="notif-btn" id="notif-btn" title="Notificaciones">
             <span class="bell-icon">🔔</span>
             <?php if ($unreadCount > 0): ?>
@@ -99,21 +105,22 @@
               <?php endif; ?>
             </div>
           </div>
+          </div>
+        <?php endif; ?>
+
+        <div class="header-user">
+          <?php if (Auth::check()): ?>
+            <span class="user-name"><?= htmlspecialchars(Auth::user()['nombre']) ?></span>
+            <?php if (Auth::isAdmin()): ?>
+              <span class="badge-admin">ADMIN</span>
+            <?php endif; ?>
+            <a href="/trivial/auth/logout" class="btn-logout">Salir</a>
+          <?php else: ?>
+            <a href="/trivial/auth/login" class="nav-link">Entrar</a>
+            <a href="/trivial/auth/registro" class="btn btn-primary btn-sm">Regístrate</a>
+          <?php endif; ?>
         </div>
       <?php endif; ?>
-
-      <div class="header-user">
-        <?php if (Auth::check()): ?>
-          <span class="user-name"><?= htmlspecialchars(Auth::user()['nombre']) ?></span>
-          <?php if (Auth::isAdmin()): ?>
-            <span class="badge-admin">ADMIN</span>
-          <?php endif; ?>
-          <a href="/trivial/auth/logout" class="btn-logout">Salir</a>
-        <?php else: ?>
-          <a href="/trivial/auth/login" class="nav-link">Entrar</a>
-          <a href="/trivial/auth/registro" class="btn btn-primary btn-sm">Regístrate</a>
-        <?php endif; ?>
-      </div>
     </div>
 
     <!-- Hamburger button -->

@@ -43,7 +43,9 @@ ob_start();
             </span>
           <?php endif; ?>
           <div style="display:flex; gap:0.5rem; align-items:center; margin-left:auto;">
-            <?php if ($jornada['activa']): ?>
+            <?php if ($jornada['activa'] == 2): ?>
+              <span class="badge badge-amarillo">⭐ Destacada</span>
+            <?php elseif ($jornada['activa'] == 1): ?>
               <span class="badge badge-verde">Activa</span>
             <?php else: ?>
               <span class="badge badge-gris">Cerrada</span>
