@@ -30,16 +30,17 @@
 
     <nav class="main-nav" id="main-nav">
       <a href="/" class="nav-link <?= $_SERVER['REQUEST_URI'] === '/' ? 'active' : '' ?>">Inicio</a>
-      <a href="/trivial" class="nav-link <?= $_SERVER['REQUEST_URI'] === '/trivial' ? 'active' : '' ?>">Liga Trivial</a>
-      <?php if ($_SERVER['REQUEST_URI'] !== '/'): ?>
+      
+      <?php if (!str_starts_with($_SERVER['REQUEST_URI'], '/trivial')): ?>
+        <a href="/trivial" class="nav-link">Liga Trivial</a>
+        <a href="https://www.ivoox.com/podcast-golstalgia_sq_f1287524_1.html" class="nav-link" target="_blank" rel="noopener">Podcast 🎙️</a>
+        <a href="https://www.patreon.com/cw/golstalgia_" class="nav-link" target="_blank" rel="noopener">Patreon 💎</a>
+      <?php else: ?>
         <a href="/trivial/calendario" class="nav-link <?= $_SERVER['REQUEST_URI'] === '/trivial/calendario' ? 'active' : '' ?>">Calendario</a>
         <a href="/trivial/reglas" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/trivial/reglas') ? 'active' : '' ?>">Reglas</a>
       <?php endif; ?>
-
-      <a href="https://www.ivoox.com/podcast-golstalgia_sq_f1287524_1.html" class="nav-link" target="_blank" rel="noopener">Podcast 🎙️</a>
-      <a href="https://www.patreon.com/cw/golstalgia_" class="nav-link" target="_blank" rel="noopener">Patreon 💎</a>
       
-      <?php if ($_SERVER['REQUEST_URI'] !== '/' && Auth::check()): ?>
+      <?php if (str_starts_with($_SERVER['REQUEST_URI'], '/trivial') && Auth::check()): ?>
         <a href="/trivial/dashboard" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/trivial/dashboard') ? 'active' : '' ?>">Mi Liga</a>
         <?php if (Auth::isAdmin()): ?>
           <a href="/trivial/admin/usuarios" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/trivial/admin') ? 'active' : '' ?>">Panel Admin</a>
@@ -152,6 +153,12 @@
 </main>
 
 <footer class="site-footer">
+  <?php if (str_starts_with($_SERVER['REQUEST_URI'], '/trivial')): ?>
+    <div class="footer-external-links" style="margin-bottom: 1.5rem; display: flex; justify-content: center; gap: 2rem;">
+      <a href="https://www.ivoox.com/podcast-golstalgia_sq_f1287524_1.html" target="_blank" rel="noopener" style="color: var(--amarillo-retro); text-decoration: none; font-weight: 800;">Podcast 🎙️</a>
+      <a href="https://www.patreon.com/cw/golstalgia_" target="_blank" rel="noopener" style="color: var(--amarillo-retro); text-decoration: none; font-weight: 800;">Patreon 💎</a>
+    </div>
+  <?php endif; ?>
   <p>Golstalgia <?= $_SERVER['REQUEST_URI'] !== '/' ? 'Liga Trivial' : '' ?> &copy; <?= date('Y') ?> &mdash; by Josep y Sagra</p>
   <p style="font-size: 0.7rem; opacity: 0.6; margin-top: 5px;">Sitio Web creado por Zerf v. 1.01 2026</p>
 </footer>
