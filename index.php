@@ -53,6 +53,8 @@ $router->get( '/trivial/admin/ligas/:id/editar',          [AdminController::clas
 $router->post('/trivial/admin/ligas/:id/actualizar',      [AdminController::class, 'ligaUpdate']);
 
 // Admin — Jornadas
+$router->get( '/trivial/admin/jornadas',                       [AdminController::class, 'jornadas']);
+$router->get( '/trivial/admin/jornadas/',                      [AdminController::class, 'jornadas']);
 $router->get( '/trivial/admin/ligas/:ligaId/jornadas',         [AdminController::class, 'jornadas']);
 $router->get( '/trivial/admin/ligas/:ligaId/jornadas/crear',   [AdminController::class, 'jornadaCreate']);
 $router->post('/trivial/admin/ligas/:ligaId/jornadas/guardar', [AdminController::class, 'jornadaStore']);

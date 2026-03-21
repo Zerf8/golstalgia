@@ -252,6 +252,7 @@ class AdminController
     // ─── JORNADAS ─────────────────────────────────────────
     public function jornadas($ligaId = null): void
     {
+        // die("DEBUG: Llegamos a jornadas! ID: " . var_export($ligaId, true));
         Auth::requireAdmin();
         
         if ($ligaId === null || $ligaId === '') {
