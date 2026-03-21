@@ -257,27 +257,29 @@ class AdminController
 
         // One-time schema update for classification
         try {
-            $updated = $db->exec("ALTER TABLE clasificacion ADD COLUMN empates INT DEFAULT 0 AFTER victorias");
-            // If it's the first time (column didn't exist), we rebuild all leagues
-            if ($updated !== false) {
+            // We use a simple query to check if the column exists first to be safer
+            $check = $db->query("SHOW COLUMNS FROM clasificacion LIKE 'empates'")->fetch();
+            if (!$check) {
+                $db->exec("ALTER TABLE clasificacion ADD COLUMN empates INT DEFAULT 0 AFTER victorias");
+                // Rebuild all since we just added the column
                 $ligas = (new LigaModel())->all();
-                $partidaModel = new PartidaModel();
-                foreach ($ligas as $l) {
-                    $partidaModel->rebuildClasificacion((int)$l['id']);
-                }
+                $pm = new PartidaModel();
+                foreach ($ligas as $l) { $pm->rebuildClasificacion((int)$l['id']); }
             }
-        } catch (Exception $e) { /* already exists or ignore */ }
+        } catch (Exception $e) { /* ignore to prevent 500 */ }
         
-        if ($ligaId === null) {
+        if ($ligaId === null || $ligaId === '') {
             $ligas = (new LigaModel())->all();
             require_once __DIR__ . '/../views/trivial/admin/ligas.php';
             return;
         }
 
-        $liga        = (new LigaModel())->findById((int)$ligaId);
+        $liga = (new LigaModel())->findById((int)$ligaId);
         if (!$liga) { $this->notFound(); return; }
-        $jornadas   = (new JornadaModel())->allByLiga((int)$ligaId);
+        
+        $jornadas = (new JornadaModel())->allByLiga((int)$ligaId);
         require_once __DIR__ . '/../views/trivial/admin/jornadas.php';
+    }
     }
 
     public function jornadaCreate(int $ligaId): void
