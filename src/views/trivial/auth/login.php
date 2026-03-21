@@ -1,4 +1,4 @@
-<?php if (Auth::check()) { header('Location: /dashboard'); exit; } ?>
+<?php if (Auth::check()) { header('Location: /trivial/dashboard'); exit; } ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,7 +7,7 @@
   <title>Acceso — Golstalgia Liga</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/trivial/public/css/app.css">
+  <link rel="stylesheet" href="/public/css/app.css">
 </head>
 <body>
 

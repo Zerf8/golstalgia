@@ -42,7 +42,7 @@ class Auth
     public static function requireLogin(): void
     {
         if (!self::check()) {
-            header('Location: /auth/login');
+            header('Location: /trivial/auth/login');
             exit;
         }
     }
@@ -51,7 +51,7 @@ class Auth
     {
         self::requireLogin();
         if (!self::isAdmin()) {
-            header('Location: /dashboard');
+            header('Location: /trivial/dashboard');
             exit;
         }
     }
