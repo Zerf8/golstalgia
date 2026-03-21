@@ -113,7 +113,7 @@ class AuthController
     public function registro(): void
     {
         if (!Auth::verifyCsrf($_POST['csrf_token'] ?? '')) {
-            $this->redirectWithError('/auth/registro', 'Token de seguridad inválido.');
+            $this->redirectWithError('/trivial/auth/registro', 'Token de seguridad inválido.');
             return;
         }
 
@@ -122,13 +122,13 @@ class AuthController
         $password = $_POST['password'] ?? '';
 
         if (!$nombre || !$email || !$password) {
-            $this->redirectWithError('/auth/registro', 'Todos los campos son obligatorios.');
+            $this->redirectWithError('/trivial/auth/registro', 'Todos los campos son obligatorios.');
             return;
         }
 
         $model = new UsuarioModel();
         if ($model->emailExists($email)) {
-            $this->redirectWithError('/auth/registro', 'El email ya está registrado.');
+            $this->redirectWithError('/trivial/auth/registro', 'El email ya está registrado.');
             return;
         }
 
@@ -143,7 +143,7 @@ class AuthController
             $_SESSION['flash_success'] = 'Registro completado. Ya puedes iniciar sesión.';
             header('Location: /trivial/auth/login');
         } else {
-            $this->redirectWithError('/auth/registro', 'Error al registrar el usuario.');
+            $this->redirectWithError('/trivial/auth/registro', 'Error al registrar el usuario.');
         }
         exit;
     }
