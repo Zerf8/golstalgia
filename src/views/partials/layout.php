@@ -108,10 +108,10 @@
           <?php if (Auth::isAdmin()): ?>
             <span class="badge-admin">ADMIN</span>
           <?php endif; ?>
-          <a href="/auth/logout" class="btn-logout">Salir</a>
+          <a href="/trivial/auth/logout" class="btn-logout">Salir</a>
         <?php else: ?>
-          <a href="/auth/login" class="nav-link">Entrar</a>
-          <a href="/auth/registro" class="btn btn-primary btn-sm">Regístrate</a>
+          <a href="/trivial/auth/login" class="nav-link">Entrar</a>
+          <a href="/trivial/auth/registro" class="btn btn-primary btn-sm">Regístrate</a>
         <?php endif; ?>
       </div>
     </div>
