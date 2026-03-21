@@ -250,9 +250,16 @@ class AdminController
     }
 
     // ─── JORNADAS ─────────────────────────────────────────
-    public function jornadas(int $ligaId): void
+    public function jornadas(?int $ligaId = null): void
     {
         Auth::requireAdmin();
+        
+        if ($ligaId === null) {
+            $ligas = (new LigaModel())->all();
+            require_once __DIR__ . '/../views/trivial/admin/ligas.php';
+            return;
+        }
+
         $ligaModel  = new LigaModel();
         $liga       = $ligaModel->findById($ligaId);
         if (!$liga) { $this->notFound(); return; }
