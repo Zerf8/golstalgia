@@ -41,6 +41,7 @@ ob_start();
             <select name="activa" class="form-control" style="max-width:200px;">
               <option value="0">Cerrada (se abre manualmente)</option>
               <option value="1">Activa</option>
+              <option value="2">Destacada (mostrar por defecto)</option>
             </select>
           </div>
 

@@ -35,7 +35,7 @@ $dias = [
                     <!-- Combo de Jornadas -->
                     <div class="form-group">
                         <label>Seleccionar Jornada</label>
-                        <select class="form-control" onchange="window.location.href='/admin/horarios?jornada_id=' + this.value">
+                        <select class="form-control" onchange="window.location.href='/trivial/admin/horarios?jornada_id=' + this.value">
                             <option value="">-- Predeterminado (Global) --</option>
                             <?php foreach ($jornadas as $j): ?>
                                 <option value="<?= $j['id'] ?>" <?= ($jornadaId == $j['id']) ? 'selected' : '' ?>>
@@ -47,7 +47,7 @@ $dias = [
 
                     <!-- Edición de Fechas de la Jornada -->
                     <?php if ($jornada): ?>
-                        <form action="/trivial/admin/jornadas/<?= $jornada['id'] ?>/fechas" method="POST" class="admin-flex-form" style="display: flex; gap: 1rem; align-items: flex-end; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
+                        <form action="/trivial/admin/jornadas/<?= $jornada['id'] ?>/fechas" method="POST" class="admin-flex-form" style="display: flex; gap: 1rem; align-items: flex-end; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px; flex-wrap: wrap;">
                             <input type="hidden" name="csrf_token" value="<?= Auth::csrf() ?>">
                             <div class="form-group">
                                 <label>Fecha Inicio</label>
@@ -57,7 +57,15 @@ $dias = [
                                 <label>Fecha Fin</label>
                                 <input type="date" name="fecha_fin" class="form-control" value="<?= $jornada['fecha_fin'] ?>">
                             </div>
-                            <button type="submit" class="btn btn-secondary btn-sm">Guardar Fechas</button>
+                            <div class="form-group">
+                                <label>Estado</label>
+                                <select name="activa" class="form-control">
+                                    <option value="0" <?= $jornada['activa'] == 0 ? 'selected' : '' ?>>Cerrada</option>
+                                    <option value="1" <?= $jornada['activa'] == 1 ? 'selected' : '' ?>>Activa</option>
+                                    <option value="2" <?= $jornada['activa'] == 2 ? 'selected' : '' ?>>⭐ Destacada</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-secondary btn-sm" style="height: 42px;">Guardar Cambios</button>
                         </form>
                     <?php else: ?>
                         <p style="opacity: 0.6; padding-bottom: 1rem;">Selecciona una jornada para editar sus fechas y tramos específicos.</p>

@@ -66,9 +66,21 @@ class JornadaModel
         return ((int) $stmt->fetchColumn()) + 1;
     }
 
+    public function findFeatured(int $ligaId): ?array
+    {
+        // Buscar jornada marcada con activa = 2
+        $stmt = $this->db->prepare("SELECT * FROM jornadas WHERE liga_id = ? AND activa = 2 LIMIT 1");
+        $stmt->execute([$ligaId]);
+        return $stmt->fetch() ?: null;
+    }
+
     public function findUltimaDisputada(int $ligaId): ?array
     {
-        // Jornada con el número más alto que tenga al menos una partida jugada
+        // 1. Prioridad: Si hay una marcada como activa = 2, ESA es la que mostramos
+        $featured = $this->findFeatured($ligaId);
+        if ($featured) return $featured;
+
+        // 2. Fallback: Jornada con el número más alto que tenga al menos una partida jugada
         $stmt = $this->db->prepare(
             "SELECT j.* FROM jornadas j
              JOIN partidas p ON p.jornada_id = j.id

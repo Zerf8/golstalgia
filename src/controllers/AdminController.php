@@ -487,7 +487,7 @@ class AdminController
             'numero'       => $jornada['numero'],
             'fecha_inicio' => $_POST['fecha_inicio'] ?? null,
             'fecha_fin'    => $_POST['fecha_fin'] ?? null,
-            'activa'       => $jornada['activa']
+            'activa'       => (int)($_POST['activa'] ?? $jornada['activa'])
         ];
         
         $model->update($id, $data);
