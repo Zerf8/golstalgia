@@ -161,7 +161,7 @@
       <a href="https://www.patreon.com/cw/golstalgia_" target="_blank" rel="noopener" style="color: var(--amarillo-retro); text-decoration: none; font-weight: 800;">Patreon 💎</a>
     </div>
   <?php endif; ?>
-  <p>Golstalgia <?= $_SERVER['REQUEST_URI'] !== '/' ? 'Liga Trivial' : '' ?> &copy; <?= date('Y') ?> &mdash; by Josep y Sagra</p>
+  <p>Golstalgia <?= $_SERVER['REQUEST_URI'] !== '/' ? 'Liga Trivial' : '' ?> &copy; <?= date('Y') ?> (Est. 2026) &mdash; by Josep y Sagra</p>
   <p style="font-size: 0.7rem; opacity: 0.6; margin-top: 5px;">Sitio Web creado por Zerf v. 1.01 2026</p>
 </footer>
 
