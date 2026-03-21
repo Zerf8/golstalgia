@@ -12,15 +12,14 @@ ob_start();
     <section class="podcast-section" style="padding: 4rem 1rem; max-width: 1000px; margin: 0 auto;">
         <h2 style="font-family: var(--font-head); text-align: center; margin-bottom: 2rem; font-size: 2rem;">🎙️ ESCUCHA NUESTRO PODCAST</h2>
         
-        <div class="ivoox-widget-wrapper" style="background: #1a1a1a; padding: 1rem; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-            <amp-iframe src="https://www.ivoox.com/player_es_podcast_287524_zp_1.html?c1=d93802" 
-                width="auto" height="400" 
-                sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox allow-same-origin" 
-                layout="fixed-height" frameborder="0" scrolling="no">
-                <amp-img src="https://static-1.ivoox.com/canales/8/3/6/7/7831637427638_XXL.jpg" 
-                    placeholder width="400" height="400" layout="fixed" alt="Golstalgia">
-                </amp-img>
-            </amp-iframe>
+        <div class="ivoox-widget-wrapper" style="background: #1a1a1a; padding: 1rem; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden;">
+            <iframe src="https://www.ivoox.com/player_es_podcast_287524_zp_1.html?c1=d93802" 
+                width="100%" height="400" 
+                frameborder="0" scrolling="no" 
+                style="border: none; display: block;"
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
+                allowfullscreen>
+            </iframe>
         </div>
 
         <div style="margin-top: 3rem; text-align: center;">
@@ -31,9 +30,6 @@ ob_start();
     </section>
 </div>
 
-<!-- Script necesario para que amp-iframe funcione fuera de páginas AMP si se desea usar así, 
-     aunque usualmente se prefiere un iframe estándar. Mantengo el código que pasó el usuario. -->
-<script async custom-element="amp-iframe" src="https://cdn.ampproject.org/v0/amp-iframe-0.1.js"></script>
 
 <?php
 $content = ob_get_clean();
