@@ -37,12 +37,17 @@ ob_start();
         <p style="padding:1rem; color:#888; font-size:0.9rem;">Aún no hay resultados registrados.</p>
       <?php else: ?>
       <div class="table-wrap">
-        <table>
+        <table class="table-full-stats">
           <thead>
             <tr>
               <th>#</th>
               <th>Jugador</th>
               <th>PJ</th>
+              <th>V</th>
+              <th>E</th>
+              <th>D</th>
+              <th>GF</th>
+              <th>GC</th>
               <th>Pts</th>
             </tr>
           </thead>
@@ -60,6 +65,11 @@ ob_start();
                 <?php endif; ?>
               </td>
               <td><?= $row['partidas_jugadas'] ?></td>
+              <td><?= $row['victorias'] ?></td>
+              <td><?= $row['empates'] ?></td>
+              <td><?= $row['derrotas'] ?></td>
+              <td><?= $row['puntos_favor'] ?></td>
+              <td><?= $row['puntos_contra'] ?></td>
               <td style="font-family:var(--font-head); font-weight:700; color:var(--amarillo-retro);">
                 <?= $row['puntos_clasificacion'] ?>
               </td>

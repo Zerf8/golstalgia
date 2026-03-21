@@ -174,7 +174,7 @@ class PartidaModel
                 $id = ($side === 'local') ? $p['local_id'] : $p['visitante_id'];
                 if (!isset($stats[$id])) {
                     $stats[$id] = [
-                        'jugadas' => 0, 'victorias' => 0, 'derrotas' => 0, 
+                        'jugadas' => 0, 'victorias' => 0, 'empates' => 0, 'derrotas' => 0, 
                         'favor' => 0, 'contra' => 0, 'puntos' => 0
                     ];
                 }
@@ -192,6 +192,7 @@ class PartidaModel
                     $stats[$id]['derrotas']++;
                 } else {
                     // Empate
+                    $stats[$id]['empates']++;
                     $stats[$id]['puntos'] += 1;
                 }
             }
@@ -199,13 +200,13 @@ class PartidaModel
         
         // Insertar estadísticas
         $stmtInsert = $this->db->prepare(
-            "INSERT INTO clasificacion (liga_id, participante_id, partidas_jugadas, victorias, derrotas, puntos_favor, puntos_contra, puntos_clasificacion)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+            "INSERT INTO clasificacion (liga_id, participante_id, partidas_jugadas, victorias, empates, derrotas, puntos_favor, puntos_contra, puntos_clasificacion)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
         
         foreach ($stats as $partId => $s) {
             $stmtInsert->execute([
-                $ligaId, $partId, $s['jugadas'], $s['victorias'], $s['derrotas'], 
+                $ligaId, $partId, $s['jugadas'], $s['victorias'], $s['empates'], $s['derrotas'], 
                 $s['favor'], $s['contra'], $s['puntos']
             ]);
         }

@@ -250,9 +250,15 @@ class AdminController
     }
 
     // ─── JORNADAS ─────────────────────────────────────────
-    public function jornadas(?int $ligaId = null): void
+    public function jornadas($ligaId = null): void
     {
         Auth::requireAdmin();
+        $db = Database::connect();
+
+        // One-time schema update for classification
+        try {
+            $db->exec("ALTER TABLE clasificacion ADD COLUMN empates INT DEFAULT 0 AFTER victorias");
+        } catch (Exception $e) { /* already exists or ignore */ }
         
         if ($ligaId === null) {
             $ligas = (new LigaModel())->all();
@@ -260,10 +266,9 @@ class AdminController
             return;
         }
 
-        $ligaModel  = new LigaModel();
-        $liga       = $ligaModel->findById($ligaId);
+        $liga        = (new LigaModel())->findById((int)$ligaId);
         if (!$liga) { $this->notFound(); return; }
-        $jornadas   = (new JornadaModel())->allByLiga($ligaId);
+        $jornadas   = (new JornadaModel())->allByLiga((int)$ligaId);
         require_once __DIR__ . '/../views/trivial/admin/jornadas.php';
     }
 
