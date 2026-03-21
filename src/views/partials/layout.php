@@ -114,11 +114,13 @@
 
         <div class="header-user">
           <?php if (Auth::check()): ?>
-            <span class="user-name"><?= htmlspecialchars(Auth::user()['nombre']) ?></span>
-            <?php if (Auth::isAdmin()): ?>
-              <span class="badge-admin">ADMIN</span>
-            <?php endif; ?>
-            <a href="/trivial/auth/logout" class="btn-logout">Salir</a>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; line-height: 1.2;">
+              <span class="user-name" style="font-weight: 800; color: var(--amarillo-retro);"><?= htmlspecialchars(Auth::user()['nombre']) ?></span>
+              <?php if (Auth::isAdmin()): ?>
+                <span style="font-size: 0.6rem; background: var(--azul-retro); color: white; padding: 1px 4px; border-radius: 3px; font-weight: 800; letter-spacing: 1px;">ADMIN</span>
+              <?php endif; ?>
+            </div>
+            <a href="/trivial/auth/logout" class="btn-logout" style="margin-left: 1rem;">Salir</a>
           <?php else: ?>
             <a href="/trivial/auth/login" class="nav-link">Entrar</a>
             <a href="/trivial/auth/registro" class="btn btn-primary btn-sm">Regístrate</a>

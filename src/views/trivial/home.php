@@ -49,10 +49,10 @@ $pageTitle = "Golstalgia – La Liga Trivial de Fútbol Retro";
                   <div class="match-team"><?= htmlspecialchars($p['nombre_local']) ?></div>
                   <div class="match-schedule">
                     <?php if (isset($p['puntos_local']) && $p['puntos_local'] !== null): ?>
-                      <div class="match-score" style="background: rgba(46, 204, 113, 0.2); color: var(--verde-vivo); border-radius: 4px; padding: 2px 8px; font-weight: 800; border: 1px solid var(--verde-cesped); margin-bottom: 2px;">
+                      <div class="match-score">
                         <?= $p['puntos_local'] ?> - <?= $p['puntos_visitante'] ?>
                       </div>
-                      <small style="font-size: 0.6rem; opacity: 0.6; display: block;">JUGADO</small>
+                      <small style="font-size: 0.6rem; opacity: 0.6; display: block; margin-top: 2px;">JUGADO</small>
                     <?php elseif ($p['fecha_acordada']): ?>
                       <?php 
                         $dias = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
