@@ -257,7 +257,15 @@ class AdminController
 
         // One-time schema update for classification
         try {
-            $db->exec("ALTER TABLE clasificacion ADD COLUMN empates INT DEFAULT 0 AFTER victorias");
+            $updated = $db->exec("ALTER TABLE clasificacion ADD COLUMN empates INT DEFAULT 0 AFTER victorias");
+            // If it's the first time (column didn't exist), we rebuild all leagues
+            if ($updated !== false) {
+                $ligas = (new LigaModel())->all();
+                $partidaModel = new PartidaModel();
+                foreach ($ligas as $l) {
+                    $partidaModel->rebuildClasificacion((int)$l['id']);
+                }
+            }
         } catch (Exception $e) { /* already exists or ignore */ }
         
         if ($ligaId === null) {
