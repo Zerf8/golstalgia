@@ -43,7 +43,7 @@
       <?php if (str_starts_with($_SERVER['REQUEST_URI'], '/trivial') && Auth::check()): ?>
         <a href="/trivial/dashboard" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/trivial/dashboard') ? 'active' : '' ?>">Mi Liga</a>
         <?php if (Auth::isAdmin()): ?>
-          <a href="/trivial/admin/usuarios" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/trivial/admin') ? 'active' : '' ?>">Panel Admin</a>
+          <a href="/trivial/admin/" class="nav-link <?= str_starts_with($_SERVER['REQUEST_URI'], '/trivial/admin') ? 'active' : '' ?>">Panel Admin</a>
         <?php endif; ?>
       <?php endif; ?>
 

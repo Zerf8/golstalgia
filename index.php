@@ -29,6 +29,7 @@ $router->get('/trivial/dashboard', [DashboardController::class, 'index']);
 
 // Admin — Usuarios
 $router->get( '/trivial/admin',                           [AdminController::class, 'index']);
+$router->get( '/trivial/admin/',                          [AdminController::class, 'index']);
 $router->get( '/trivial/admin/usuarios',                  [AdminController::class, 'usuarios']);
 $router->get( '/trivial/admin/usuarios/crear',            [AdminController::class, 'usuarioCreate']);
 $router->post('/trivial/admin/usuarios/guardar',          [AdminController::class, 'usuarioStore']);
