@@ -32,6 +32,10 @@ class JornadaModel
 
     public function create(array $data): int
     {
+        if (isset($data['activa']) && (int)$data['activa'] === 2 && !empty($data['liga_id'])) {
+            $this->db->prepare("UPDATE jornadas SET activa = 1 WHERE liga_id = ? AND activa = 2")->execute([$data['liga_id']]);
+        }
+
         $stmt = $this->db->prepare(
             "INSERT INTO jornadas (liga_id, numero, fecha_inicio, fecha_fin, activa) VALUES (?,?,?,?,?)"
         );
@@ -47,6 +51,15 @@ class JornadaModel
 
     public function update(int $id, array $data): bool
     {
+        if (isset($data['activa']) && (int)$data['activa'] === 2) {
+            $ligaIdStmt = $this->db->prepare("SELECT liga_id FROM jornadas WHERE id = ?");
+            $ligaIdStmt->execute([$id]);
+            $ligaIdResult = $ligaIdStmt->fetchColumn();
+            if ($ligaIdResult) {
+                $this->db->prepare("UPDATE jornadas SET activa = 1 WHERE liga_id = ? AND activa = 2 AND id != ?")->execute([$ligaIdResult, $id]);
+            }
+        }
+
         $stmt = $this->db->prepare(
             "UPDATE jornadas SET numero=?, fecha_inicio=?, fecha_fin=?, activa=? WHERE id=?"
         );
