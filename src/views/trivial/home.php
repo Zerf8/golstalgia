@@ -25,7 +25,24 @@ $pageTitle = "Golstalgia – La Liga Trivial de Fútbol Retro";
             <?php foreach ($partidasUltima as $p): ?>
               <div class="match-row">
                 <div class="match-team"><?= htmlspecialchars($p['nombre_local']) ?></div>
-                <div class="match-score"><?= $p['puntos_local'] ?> - <?= $p['puntos_visitante'] ?></div>
+                
+                <?php if ($p['estado'] === 'jugada' || (isset($p['puntos_local']) && $p['puntos_local'] !== null)): ?>
+                  <div class="match-score"><?= $p['puntos_local'] ?> - <?= $p['puntos_visitante'] ?></div>
+                <?php else: ?>
+                  <div class="match-schedule">
+                    <?php if (!empty($p['fecha_acordada'])): ?>
+                      <?php 
+                        $dias = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
+                        $w = date('w', strtotime($p['fecha_acordada']));
+                      ?>
+                      <div class="schedule-date"><?= $dias[$w] ?> <?= date('d/m', strtotime($p['fecha_acordada'])) ?></div>
+                      <div class="schedule-time"><?= date('H:i', strtotime($p['fecha_acordada'])) ?></div>
+                    <?php else: ?>
+                      <div class="schedule-none">Sin asignar</div>
+                    <?php endif; ?>
+                  </div>
+                <?php endif; ?>
+
                 <div class="match-team right"><?= htmlspecialchars($p['nombre_visitante']) ?></div>
               </div>
             <?php endforeach; ?>
@@ -47,23 +64,27 @@ $pageTitle = "Golstalgia – La Liga Trivial de Fútbol Retro";
               <?php foreach ($partidasProxima as $p): ?>
                 <div class="match-row">
                   <div class="match-team"><?= htmlspecialchars($p['nombre_local']) ?></div>
-                  <div class="match-schedule">
-                    <?php if (isset($p['puntos_local']) && $p['puntos_local'] !== null): ?>
-                      <div class="match-score">
-                        <?= $p['puntos_local'] ?> - <?= $p['puntos_visitante'] ?>
-                      </div>
-                      <small style="font-size: 0.6rem; opacity: 0.6; display: block; margin-top: 2px;">JUGADO</small>
-                    <?php elseif ($p['fecha_acordada']): ?>
-                      <?php 
-                        $dias = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
-                        $w = date('w', strtotime($p['fecha_acordada']));
-                      ?>
-                      <div class="schedule-date"><?= $dias[$w] ?> <?= date('d/m', strtotime($p['fecha_acordada'])) ?></div>
-                      <div class="schedule-time"><?= date('H:i', strtotime($p['fecha_acordada'])) ?></div>
-                    <?php else: ?>
-                      <div class="schedule-none">Sin asignar</div>
-                    <?php endif; ?>
-                  </div>
+                  
+                  <?php if ($p['estado'] === 'jugada' || (isset($p['puntos_local']) && $p['puntos_local'] !== null)): ?>
+                    <div style="text-align: center;">
+                      <div class="match-score"><?= $p['puntos_local'] ?> - <?= $p['puntos_visitante'] ?></div>
+                      <small style="font-size: 0.6rem; color: var(--amarillo-retro); letter-spacing: 1px; display: block; margin-top: 4px; text-transform: uppercase;">JUGADO</small>
+                    </div>
+                  <?php else: ?>
+                    <div class="match-schedule">
+                      <?php if (!empty($p['fecha_acordada'])): ?>
+                        <?php 
+                          $dias = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
+                          $w = date('w', strtotime($p['fecha_acordada']));
+                        ?>
+                        <div class="schedule-date"><?= $dias[$w] ?> <?= date('d/m', strtotime($p['fecha_acordada'])) ?></div>
+                        <div class="schedule-time"><?= date('H:i', strtotime($p['fecha_acordada'])) ?></div>
+                      <?php else: ?>
+                        <div class="schedule-none">Sin asignar</div>
+                      <?php endif; ?>
+                    </div>
+                  <?php endif; ?>
+
                   <div class="match-team right"><?= htmlspecialchars($p['nombre_visitante']) ?></div>
                 </div>
               <?php endforeach; ?>
