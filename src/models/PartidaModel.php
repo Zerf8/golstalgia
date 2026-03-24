@@ -7,10 +7,6 @@ class PartidaModel
     public function __construct()
     {
         $this->db = Database::connect();
-        // var_dump($this->db);
-        if (!($this->db instanceof PDO)) {
-            die("Error: \$this->db no es una instancia de PDO. Es: " . get_class($this->db) . "\n");
-        }
     }
 
     public function all(?int $ligaId = null, ?int $jornadaId = null, ?int $participanteId = null): array
