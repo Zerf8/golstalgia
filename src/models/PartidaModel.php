@@ -222,7 +222,7 @@ class PartidaModel
     public function getClasificacion(int $ligaId): array
     {
         $stmt = $this->db->prepare(
-            "SELECT c.*, p.nombre
+            "SELECT c.*, p.nombre, (c.partidas_jugadas - c.victorias - c.derrotas) AS empates
              FROM clasificacion c
              JOIN participantes p ON p.id = c.participante_id
              WHERE c.liga_id = ?
