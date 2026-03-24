@@ -257,6 +257,13 @@ class AdminController
         
         if ($ligaId === null || $ligaId === '') {
             $ligas = (new LigaModel())->all();
+            $activas = array_filter($ligas, fn($l) => (int)$l['activa'] === 1);
+            if (count($activas) === 1) {
+                $uniqueActiva = reset($activas)['id'];
+                header("Location: /trivial/admin/ligas/{$uniqueActiva}/jornadas");
+                exit;
+            }
+            
             require_once __DIR__ . '/../views/trivial/admin/ligas.php';
             return;
         }
@@ -366,9 +373,23 @@ class AdminController
     public function partidas(): void
     {
         Auth::requireAdmin();
-        $ligaId         = isset($_GET['liga_id']) ? (int)$_GET['liga_id'] : null;
-        $jornadaId      = isset($_GET['jornada_id']) ? (int)$_GET['jornada_id'] : null;
-        $participanteId = isset($_GET['participante_id']) ? (int)$_GET['participante_id'] : null;
+        
+        $isLigaProvided = isset($_GET['liga_id']) && $_GET['liga_id'] !== '';
+        if (!isset($_GET['liga_id'])) {
+            $ligas = (new LigaModel())->all();
+            $activas = array_filter($ligas, fn($l) => (int)$l['activa'] === 1);
+            if (count($activas) === 1) {
+                $uniqueActiva = reset($activas)['id'];
+                $jornadaQuery = !empty($_GET['jornada_id']) ? "&jornada_id=" . (int)$_GET['jornada_id'] : "";
+                $partQuery = !empty($_GET['participante_id']) ? "&participante_id=" . (int)$_GET['participante_id'] : "";
+                header("Location: /trivial/admin/partidas?liga_id={$uniqueActiva}{$jornadaQuery}{$partQuery}");
+                exit;
+            }
+        }
+        
+        $ligaId         = $isLigaProvided ? (int)$_GET['liga_id'] : null;
+        $jornadaId      = !empty($_GET['jornada_id']) ? (int)$_GET['jornada_id'] : null;
+        $participanteId = !empty($_GET['participante_id']) ? (int)$_GET['participante_id'] : null;
 
         $model    = new PartidaModel();
         $partidas = $model->all($ligaId, $jornadaId, $participanteId);
@@ -376,9 +397,11 @@ class AdminController
         $ligas        = (new LigaModel())->all();
         $participantes = (new ParticipanteModel())->all();
         
-        $jornadas = [];
+        $jornadaModel = new JornadaModel();
         if ($ligaId) {
-            $jornadas = (new JornadaModel())->allByLiga($ligaId);
+            $jornadas = $jornadaModel->allByLiga($ligaId);
+        } else {
+            $jornadas = $jornadaModel->all();
         }
 
         require_once __DIR__ . '/../views/trivial/admin/partidas.php';
