@@ -157,7 +157,7 @@ class PartidaModel
         $this->db->prepare("DELETE FROM clasificacion WHERE liga_id = ?")->execute([$ligaId]);
         
         // Obtener todos los participantes de la liga
-        $stmtParts = $this->db->prepare("SELECT id FROM participantes WHERE liga_id = ?");
+        $stmtParts = $this->db->prepare("SELECT participante_id FROM participantes_ligas WHERE liga_id = ?");
         $stmtParts->execute([$ligaId]);
         $allParticipants = $stmtParts->fetchAll(PDO::FETCH_COLUMN);
         
@@ -207,13 +207,13 @@ class PartidaModel
         
         // Insertar estadísticas
         $stmtInsert = $this->db->prepare(
-            "INSERT INTO clasificacion (liga_id, participante_id, partidas_jugadas, victorias, empates, derrotas, puntos_favor, puntos_contra, puntos_clasificacion)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            "INSERT INTO clasificacion (liga_id, participante_id, partidas_jugadas, victorias, derrotas, puntos_favor, puntos_contra, puntos_clasificacion)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
         );
         
         foreach ($stats as $partId => $s) {
             $stmtInsert->execute([
-                $ligaId, $partId, $s['jugadas'], $s['victorias'], $s['empates'], $s['derrotas'], 
+                $ligaId, $partId, $s['jugadas'], $s['victorias'], $s['derrotas'], 
                 $s['favor'], $s['contra'], $s['puntos']
             ]);
         }
