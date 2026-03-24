@@ -15,6 +15,7 @@ $router->post('/trivial/auth/login',           [AuthController::class, 'login'])
 $router->get( '/trivial/auth/registro',        [AuthController::class, 'registroForm']);
 $router->post('/trivial/auth/registro',        [AuthController::class, 'registro']);
 $router->get( '/trivial/auth/google/callback', [AuthController::class, 'googleCallback']);
+$router->get( '/trivial/auth/logout',          [AuthController::class, 'logout']);
 // Redirect fallbacks for legacy URLs (Google OAuth etc.)
 $router->get('/auth/google/callback', [AuthController::class, 'googleCallback']);
 $router->get('/auth/logout',          [AuthController::class, 'logout']);
