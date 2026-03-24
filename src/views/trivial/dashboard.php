@@ -269,6 +269,8 @@ ob_start();
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
 }
 .match-header {
   background: rgba(255, 255, 255, 0.05);

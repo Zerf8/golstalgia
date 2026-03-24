@@ -7,6 +7,10 @@ class PartidaModel
     public function __construct()
     {
         $this->db = Database::connect();
+        // var_dump($this->db);
+        if (!($this->db instanceof PDO)) {
+            die("Error: \$this->db no es una instancia de PDO. Es: " . get_class($this->db) . "\n");
+        }
     }
 
     public function all(?int $ligaId = null, ?int $jornadaId = null, ?int $participanteId = null): array
@@ -156,6 +160,19 @@ class PartidaModel
         // Limpiar clasificación actual de la liga
         $this->db->prepare("DELETE FROM clasificacion WHERE liga_id = ?")->execute([$ligaId]);
         
+        // Obtener todos los participantes de la liga
+        $stmtParts = $this->db->prepare("SELECT id FROM participantes WHERE liga_id = ?");
+        $stmtParts->execute([$ligaId]);
+        $allParticipants = $stmtParts->fetchAll(PDO::FETCH_COLUMN);
+        
+        $stats = [];
+        foreach ($allParticipants as $id) {
+            $stats[$id] = [
+                'jugadas' => 0, 'victorias' => 0, 'empates' => 0, 'derrotas' => 0, 
+                'favor' => 0, 'contra' => 0, 'puntos' => 0
+            ];
+        }
+        
         // Obtener todos los resultados de la liga
         $stmt = $this->db->prepare(
             "SELECT p.local_id, p.visitante_id, r.puntos_local, r.puntos_visitante, r.ganador_id
@@ -167,17 +184,11 @@ class PartidaModel
         $stmt->execute([$ligaId]);
         $partidas = $stmt->fetchAll();
         
-        $stats = [];
-        
         foreach ($partidas as $p) {
             foreach (['local', 'visitante'] as $side) {
                 $id = ($side === 'local') ? $p['local_id'] : $p['visitante_id'];
-                if (!isset($stats[$id])) {
-                    $stats[$id] = [
-                        'jugadas' => 0, 'victorias' => 0, 'empates' => 0, 'derrotas' => 0, 
-                        'favor' => 0, 'contra' => 0, 'puntos' => 0
-                    ];
-                }
+                // Verificación de seguridad por si el participante ya no existe en la liga
+                if (!isset($stats[$id])) continue;
                 
                 $stats[$id]['jugadas']++;
                 $p_favor  = ($side === 'local') ? $p['puntos_local'] : $p['puntos_visitante'];
